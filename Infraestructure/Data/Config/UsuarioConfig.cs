@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
+﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -28,13 +23,6 @@ namespace Infraestructure.Data.Config
 
             builder.HasKey(u => u.Id);
             builder.HasIndex(u => u.Correo).IsUnique();
-
-            //builder.HasMany(u => u.Comentarios).WithOne(c => c.Usuario).HasForeignKey(c => c.UsuarioID);
-            //builder.HasOne(u => u.Pais).WithMany(p => p.Usuarios).HasForeignKey(u => u.PaisID);
-            //builder.HasOne(u => u.UsuarioTipo).WithMany(ut => ut.Usuarios).HasForeignKey(u => u.UsuarioTipoID); 
-            //builder.HasOne(u => u.UsuarioRecetaCategoriaFav).WithOne(urcf => urcf.Usuario).HasForeignKey<UsuarioRecetaCategoriaFav>(urcf => urcf.UsuarioID);
-            //builder.HasOne(u => u.UsuarioRecetaFav).WithOne(urf => urf.Usuario).HasForeignKey<UsuarioRecetaFav>(urf => urf.UsuarioID);
-
         }
     }
 }

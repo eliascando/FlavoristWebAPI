@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using Domain;
 using Application.Services;
-using Infraestructure;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;

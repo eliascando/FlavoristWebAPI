@@ -1,6 +1,5 @@
 ﻿using Application.Services;
 using Domain;
-using Infraestructure.Data;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Mvc;

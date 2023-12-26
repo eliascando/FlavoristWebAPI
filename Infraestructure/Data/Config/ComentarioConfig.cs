@@ -1,10 +1,4 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,10 +19,6 @@ namespace Infraestructure.Data.Config
             builder.Property(e => e.EventoID).IsRequired();
 
             builder.HasKey(e => e.Id);
-
-            //builder.HasOne(e => e.EntidadTipo).WithMany().HasForeignKey(e => e.EntidadTipoID);
-            //builder.HasOne(e => e.Usuario).WithMany().HasForeignKey(e => e.UsuarioID);
-            //builder.HasOne(e => e.Evento).WithMany().HasForeignKey(e => e.EventoID);    
         }
     }
 }

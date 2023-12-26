@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain;
 using Domain.DTOs;
-using Infraestructure;
-using Infraestructure.Data;
 using Infraestructure.Data.Context;
-using Application;
 using Application.Services;
-using Application.Interfaces;
 using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -77,7 +73,7 @@ namespace FlavoristWebAPI.Controllers
 
             }catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(JsonConvert.SerializeObject(new { error = true, message = ex.Message }));
             }
         }
     }

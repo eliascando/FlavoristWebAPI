@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
+﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,8 +17,6 @@ namespace Infraestructure.Data.Config
             builder.Property(x => x.Cantidad).IsRequired();
             builder.Property(x => x.UnidadMedidaID).IsRequired();
             builder.Property(x => x.CategoriaID).IsRequired();
-
-            //builder.HasOne(x => x.Receta).WithMany(x => x.RecetaIngredientes).HasForeignKey(x => x.RecetaID);
         }
     }
 }
