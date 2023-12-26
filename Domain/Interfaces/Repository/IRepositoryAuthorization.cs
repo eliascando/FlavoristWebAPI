@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Interfaces.Repository
 {
-    public class Pais
+    public interface IRepositoryAuthorization<T, TResult>
+        : ILogin<T, TResult>
     {
-        public Guid Id { get; set; }
-        public string Nombre { get; set; }
+
     }
 }

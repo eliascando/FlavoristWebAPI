@@ -14,9 +14,5 @@ namespace Domain
         public Guid UsuarioID { get; set; }
         public DateTime FechaHora { get; set; }
         public int EventoID { get; set; }
-
-        ///*Objetos de Relacion*/
-        //public EntidadTipo EntidadTipo { get; set; }
-        //public Usuario Usuario { get; set; }
     }
 }

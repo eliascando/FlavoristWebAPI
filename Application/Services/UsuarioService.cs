@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
+using System.Diagnostics;
 
 namespace Application.Services
 {
@@ -22,6 +24,9 @@ namespace Application.Services
         {
             if (entidad == null)
                 throw new ArgumentNullException("Usuario", "No se puede agregar un usuario nulo");
+
+            entidad.Id = Guid.NewGuid();
+            entidad.Password = BCrypt.Net.BCrypt.HashPassword(entidad.Password);
 
             var usuario = _reposUsuario.Agregar(entidad);
             _reposUsuario.Guardar();
@@ -40,12 +45,13 @@ namespace Application.Services
 
         public List<Usuario> Listar()
         {
-            throw new NotImplementedException();
+            return _reposUsuario.Listar();
         }
 
         public Usuario ObtenerPorId(Guid id)
         {
-            throw new NotImplementedException();
+            var resultado = _reposUsuario.ObtenerPorId(id);
+            return resultado;
         }
     }
 }

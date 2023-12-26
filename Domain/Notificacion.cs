@@ -13,8 +13,5 @@ namespace Domain
         public Guid EventoId { get; set; }
         public Boolean Visto { get; set; }
         public DateTime Fecha { get; set; }
-
-        ///*Objetos de Relacion*/
-        //public Evento Evento { get; set; }
     }
 }

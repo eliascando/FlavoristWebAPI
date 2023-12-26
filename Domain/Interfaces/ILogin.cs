@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Interfaces
 {
-    public class Pais
+    public interface ILogin<T, TResult>
     {
-        public Guid Id { get; set; }
-        public string Nombre { get; set; }
+        TResult Login(T entity);
     }
 }

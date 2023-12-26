@@ -11,9 +11,5 @@ namespace Domain
         public Guid Id { get; set; }
         public Guid RecetaID { get; set; }
         public Guid UsuarioID { get; set; }
-
-        ///*Objetos de Relacion*/
-        //public Receta Receta { get; set; }
-        //public Usuario Usuario { get; set; }
     }
 }

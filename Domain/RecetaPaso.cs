@@ -13,8 +13,5 @@ namespace Domain
         public int Orden { get; set; }
         public string Descripcion { get; set; }
         public byte[]? Imagen { get; set; }
-
-        ///*Objetos de Relacion*/
-        //public Receta Receta { get; set; }
     }
 }

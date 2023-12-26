@@ -23,11 +23,5 @@ namespace Domain
         public Guid EventoID { get; set; }
         public List<RecetaPaso> RecetaPasos { get; set; }
         public List<RecetaIngrediente> RecetaIngredientes { get; set; }
-
-        ///*Objetos de Relacion*/
-        //public Usuario Usuario { get; set; }
-        //public RecetaCategoria RecetaCategoria { get; set; }
-        //public RecetaDificultad RecetaDificultad { get; set; }
-        //public Evento Evento { get; set; }
     }
 }

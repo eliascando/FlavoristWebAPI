@@ -5,6 +5,7 @@ using Application.Services;
 using Infraestructure;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,26 +22,28 @@ namespace FlavoristWebAPI.Controllers
             UsuarioService servicio = new UsuarioService(repo);
             return servicio;
         }
-        // GET: api/<UsuarioController>
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var servicio = CrearServicio();
+            return Ok(servicio.Listar());
         }
 
-        // GET api/<UsuarioController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Usuario> Get(Guid id)
         {
-            return "value";
+            var servicio = CrearServicio();
+            return Ok(servicio.ObtenerPorId(id));
         }
 
         // POST api/<UsuarioController>
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Post([FromBody] Usuario usuario)
         {
             if (usuario == null)
-                return BadRequest("Usuario no válido.");
+                return BadRequest("Debe enviar un usuario válido.");
 
             var servicio = CrearServicio();
             var respuesta = servicio.Agregar(usuario);
@@ -48,15 +51,28 @@ namespace FlavoristWebAPI.Controllers
         }
 
         // PUT api/<UsuarioController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("actualizar/{id}")]
+        public ActionResult Put(Guid id, [FromBody] Usuario usuario)
         {
+            if (usuario == null)
+                return BadRequest("Debe enviar un usuario válido.");
+
+            if(id != usuario.Id)
+                return BadRequest("El id del usuario no coincide con el id de la URL.");
+
+            var servicio = CrearServicio();
+            var respuesta = servicio.Editar(usuario);
+            return Ok("Usuario actualizado correctamente.");
         }
 
         // DELETE api/<UsuarioController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(Guid id)
         {
+            var servicio = CrearServicio();
+            var usuario = servicio.ObtenerPorId(id);
+            servicio.Eliminar(usuario);
+            return Ok("Usuario eliminado correctamente.");
         }
     }
 }

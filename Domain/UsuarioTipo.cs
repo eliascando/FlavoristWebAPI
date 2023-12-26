@@ -10,8 +10,5 @@ namespace Domain
     {
         public Guid Id { get; set; }
         public string Nombre { get; set; }
-
-        ///* Listas de objetos de relación */
-        //public List<Usuario> Usuarios { get; set; }
     }
 }

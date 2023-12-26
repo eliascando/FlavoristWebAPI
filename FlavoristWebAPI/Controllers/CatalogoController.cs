@@ -9,35 +9,33 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlavoristWebAPI.Controllers
 {
-    [Route("api/catalogo")]
+    [Route("api/catalogo/pais")]
     [ApiController]
-    public class CatalogoController : ControllerBase
+    public class CatalogoPaisController : ControllerBase
     {
-        CatalogoService CrearServicio()
+        CatalogoServicePais CrearServicio()
         {
             DBContext dB = new DBContext();
-            CatalogoRepository repo = new CatalogoRepository(dB);
-            CatalogoService servicio = new CatalogoService(repo);
+            CatalogoRepositoryPais repo = new CatalogoRepositoryPais(dB);
+            CatalogoServicePais servicio = new CatalogoServicePais(repo);
             return servicio;
         }
 
-        #region PaisCatalogo
-        // GET: api/<CatalogoController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<Pais> Get()
         {
-            return new string[] { "value1", "value2" };
+            var servicio = CrearServicio();
+            return Ok(servicio.Listar());
         }
 
-        // GET api/<CatalogoController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Pais> Get(Guid id)
         {
-            return "value";
+            var servicio = CrearServicio();
+            return Ok(servicio.ObtenerPorId(id));
         }
 
-        // POST api/<CatalogoController>
-        [HttpPost("/pais")]
+        [HttpPost]
         public ActionResult Post([FromBody] Pais pais)
         {
             if (pais == null)
@@ -47,19 +45,43 @@ namespace FlavoristWebAPI.Controllers
             var respuesta = servicio.Agregar(pais);
             return Ok(pais);
         }
+    }
 
-        // PUT api/<CatalogoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+    [Route("api/catalogo/usuariotipo")]
+    [ApiController]
+    public class CatalogoUsuarioTipoController : ControllerBase
+    {
+        CatalogoServiceUsuarioTipo CrearServicio()
         {
+            DBContext dB = new DBContext();
+            CatalogoRepositoryUsuarioTipo repo = new CatalogoRepositoryUsuarioTipo(dB);
+            CatalogoServiceUsuarioTipo servicio = new CatalogoServiceUsuarioTipo(repo);
+            return servicio;
         }
 
-        // DELETE api/<CatalogoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet]
+        public ActionResult<UsuarioTipo> Get()
         {
-
+            var servicio = CrearServicio();
+            return Ok(servicio.Listar());
         }
-        #endregion
+
+        [HttpGet("{id}")]
+        public ActionResult<UsuarioTipo> Get(Guid id)
+        {
+            var servicio = CrearServicio();
+            return Ok(servicio.ObtenerPorId(id));
+        }
+
+        [HttpPost]
+        public ActionResult Post([FromBody] UsuarioTipo usuarioTipo)
+        {
+            if (usuarioTipo == null)
+                return BadRequest("UsuarioTipo no válido.");
+
+            var servicio = CrearServicio();
+            var respuesta = servicio.Agregar(usuarioTipo);
+            return Ok(usuarioTipo);
+        }
     }
 }

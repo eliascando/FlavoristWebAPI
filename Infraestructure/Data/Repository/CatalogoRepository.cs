@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Data.Repository
 {
-    public class CatalogoRepository 
+    public class CatalogoRepositoryPais
         :IRepositoryBase<Pais,Guid >
     {
         private DBContext db;
 
-        public CatalogoRepository(DBContext _db)
+        public CatalogoRepositoryPais(DBContext _db)
         {
             db = _db;
         }
 
-        #region PaisCatalogo
         public Pais Agregar(Pais entidad)
         {
             entidad.Id = Guid.NewGuid();
@@ -34,7 +33,7 @@ namespace Infraestructure.Data.Repository
 
         public void Eliminar(Pais entidad)
         {
-            throw new NotImplementedException();
+            db.Paises.Remove(entidad);
         }
         public List<Pais> Listar()
         {
@@ -63,6 +62,60 @@ namespace Infraestructure.Data.Repository
         {
             db.Database.RollbackTransaction();
         }
-        #endregion
     }
+
+    public class CatalogoRepositoryUsuarioTipo
+        : IRepositoryBase<UsuarioTipo, Guid>
+    {
+        private DBContext db;
+
+        public CatalogoRepositoryUsuarioTipo(DBContext _db)
+        {
+            db = _db;
+        }
+
+        public UsuarioTipo Agregar(UsuarioTipo entidad)
+        {
+            entidad.Id = Guid.NewGuid();
+            db.UsuarioTipos.Add(entidad);
+            return entidad;
+        }
+
+        public UsuarioTipo Editar(UsuarioTipo entidad)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Eliminar(UsuarioTipo entidad)
+        {
+            db.UsuarioTipos.Remove(entidad);
+        }
+        public List<UsuarioTipo> Listar()
+        {
+            return db.UsuarioTipos.ToList();
+        }
+
+        public UsuarioTipo ObtenerPorId(Guid id)
+        {
+            var usuarioTipo = db.UsuarioTipos.Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Usuario no encontrado");
+            return usuarioTipo;
+        }
+
+        public void Begin()
+        {
+            db.Database.BeginTransaction();
+        }
+        public void Commit()
+        {
+            db.Database.CommitTransaction();
+        }
+        public void Guardar()
+        {
+            db.SaveChanges();
+        }
+        public void Rollback()
+        {
+            db.Database.RollbackTransaction();
+        }
+    }   
 }

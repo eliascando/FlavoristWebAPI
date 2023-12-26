@@ -14,10 +14,5 @@ namespace Domain
         public decimal Cantidad { get; set; }
         public int UnidadMedidaID { get; set; }
         public Guid CategoriaID { get; set; }
-
-        ///* Objetos de Relacion */
-        //public Receta Receta { get; set; }
-        //public UnidadMedida UnidadMedida { get; set; }
-        //public IngredienteCategoria Categoria { get; set; } 
     }
 }
