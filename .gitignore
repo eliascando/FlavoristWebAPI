@@ -477,5 +477,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # Appsettings
-./FlavoristWebAPI/appsettings.json
+FlavoristWebAPI/appsettings.json
 

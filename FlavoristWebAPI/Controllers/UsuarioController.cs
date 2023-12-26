@@ -4,8 +4,7 @@ using Application.Services;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Newtonsoft.Json;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -35,7 +34,6 @@ namespace FlavoristWebAPI.Controllers
             return Ok(servicio.ObtenerPorId(id));
         }
 
-        // POST api/<UsuarioController>
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Post([FromBody] Usuario usuario)
@@ -45,10 +43,9 @@ namespace FlavoristWebAPI.Controllers
 
             var servicio = CrearServicio();
             var respuesta = servicio.Agregar(usuario);
-            return Ok(usuario);
+            return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario creado correctamente.", usuario = respuesta }));
         }
 
-        // PUT api/<UsuarioController>/5
         [HttpPut("actualizar/{id}")]
         public ActionResult Put(Guid id, [FromBody] Usuario usuario)
         {
@@ -59,18 +56,17 @@ namespace FlavoristWebAPI.Controllers
                 return BadRequest("El id del usuario no coincide con el id de la URL.");
 
             var servicio = CrearServicio();
-            var respuesta = servicio.Editar(usuario);
-            return Ok("Usuario actualizado correctamente.");
+            servicio.Editar(usuario);
+            return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario actualizado correctamente." }));
         }
 
-        // DELETE api/<UsuarioController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("eliminar/{id}")]
         public ActionResult Delete(Guid id)
         {
             var servicio = CrearServicio();
             var usuario = servicio.ObtenerPorId(id);
             servicio.Eliminar(usuario);
-            return Ok("Usuario eliminado correctamente.");
+            return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario eliminado correctamente." }));
         }
     }
 }
