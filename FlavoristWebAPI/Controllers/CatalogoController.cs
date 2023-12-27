@@ -1,5 +1,5 @@
 ﻿using Application.Services;
-using Domain;
+using Domain.Entities.Catalog;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
@@ -69,7 +69,7 @@ namespace FlavoristWebAPI.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public ActionResult<UsuarioTipo> Get(Guid id)
+        public ActionResult<UsuarioTipo> Get(int id)
         {
             var servicio = CrearServicio();
             return Ok(servicio.ObtenerPorId(id));
@@ -273,44 +273,6 @@ namespace FlavoristWebAPI.Controllers
 
             var servicio = CrearServicio();
             var respuesta = servicio.Agregar(eventoTipo);
-            return Ok(respuesta);
-        }
-    }
-
-    [Route("api/catalogo/entidadtipo")]
-    [ApiController]
-    public class CatalogoEntidadTipoController : ControllerBase
-    {
-        CatalogoServiceEntidadTipo CrearServicio()
-        {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryEntidadTipo repo = new CatalogoRepositoryEntidadTipo(dB);
-            CatalogoServiceEntidadTipo servicio = new CatalogoServiceEntidadTipo(repo);
-            return servicio;
-        }
-
-        [HttpGet]
-        public ActionResult<EntidadTipo> Get()
-        {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
-        }
-
-        [HttpGet("{id}")]
-        public ActionResult<EntidadTipo> Get(int id)
-        {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
-        }
-
-        [HttpPost]
-        public ActionResult Post([FromBody] EntidadTipo entidadTipo)
-        {
-            if (entidadTipo == null)
-                return BadRequest("EntidadTipo no válido.");
-
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(entidadTipo);
             return Ok(respuesta);
         }
     }

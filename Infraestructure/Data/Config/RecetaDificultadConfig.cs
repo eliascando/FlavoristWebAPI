@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Entities.Catalog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ namespace Infraestructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<RecetaDificultad> builder)
         {
+            builder.ToTable("RecetaDificultades");
+
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id).ValueGeneratedOnAdd();

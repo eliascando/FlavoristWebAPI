@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Domain;
+using Domain.Entities;
 
 namespace Infraestructure.Data.Config
 {
@@ -7,12 +7,14 @@ namespace Infraestructure.Data.Config
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Follow> builder)
         {
-            builder.ToTable("Follow");
+            builder.ToTable("Follows");
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id).ValueGeneratedOnAdd();
-            builder.Property(e => e.IdSeguidor).IsRequired();
-            builder.Property(e => e.IdSeguido).IsRequired();
+            builder.Property(e => e.SeguidoID).IsRequired();
+            builder.Property(e => e.SeguidorID).IsRequired();
+            builder.Property(e => e.EventoTipoID).IsRequired();
+            builder.Property(e => e.EventoID).IsRequired();
         }
     }
 

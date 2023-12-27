@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Domain;
+using Domain.Entities;
 using Domain.DTOs;
 using Application.Interfaces;
 using Infraestructure.Data.Repository;

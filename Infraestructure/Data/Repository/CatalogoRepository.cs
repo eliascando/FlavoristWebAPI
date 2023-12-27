@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Domain.Entities;
+using Domain.Entities.Catalog;
 using Domain.Interfaces.Repository;
 using Infraestructure.Data.Context;
 
@@ -41,26 +42,14 @@ namespace Infraestructure.Data.Repository
             return pais;
         }
 
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
         }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
-        }
     }
 
     public class CatalogoRepositoryUsuarioTipo
-        : IRepositoryBase<UsuarioTipo, Guid>
+        : IRepositoryBase<UsuarioTipo, int>
     {
         private DBContext db;
 
@@ -71,7 +60,6 @@ namespace Infraestructure.Data.Repository
 
         public UsuarioTipo Agregar(UsuarioTipo entidad)
         {
-            entidad.Id = Guid.NewGuid();
             db.UsuarioTipos.Add(entidad);
             return entidad;
         }
@@ -90,27 +78,15 @@ namespace Infraestructure.Data.Repository
             return db.UsuarioTipos.ToList();
         }
 
-        public UsuarioTipo ObtenerPorId(Guid id)
+        public UsuarioTipo ObtenerPorId(int id)
         {
             var usuarioTipo = db.UsuarioTipos.Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Usuario no encontrado");
             return usuarioTipo;
         }
 
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
         }
     }   
 
@@ -151,21 +127,9 @@ namespace Infraestructure.Data.Repository
             return ingredienteCategoria;
         }
 
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
         }
     }
 
@@ -206,21 +170,9 @@ namespace Infraestructure.Data.Repository
             return recetaCategoria;
         }
 
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
         }
     }
 
@@ -260,21 +212,9 @@ namespace Infraestructure.Data.Repository
             return recetaDificultad;
         }
 
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
         }
     }
 
@@ -313,22 +253,9 @@ namespace Infraestructure.Data.Repository
             var unidadMedida = db.UnidadMedidas.Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Receta no encontrado");
             return unidadMedida;
         }
-
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
         }
     }
 
@@ -368,75 +295,9 @@ namespace Infraestructure.Data.Repository
             return eventoTipo;
         }
 
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
-        }
-    }
-    
-    public class CatalogoRepositoryEntidadTipo
-        : IRepositoryBase<EntidadTipo, int>
-    {
-           private DBContext db;
-
-        public CatalogoRepositoryEntidadTipo(DBContext _db)
-        {
-            db = _db;
-        }
-
-        public EntidadTipo Agregar(EntidadTipo entidad)
-        {
-            db.EntidadTipos.Add(entidad);
-            return entidad;
-        }
-
-        public EntidadTipo Editar(EntidadTipo entidad)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Eliminar(EntidadTipo entidad)
-        {
-            db.EntidadTipos.Remove(entidad);
-        }
-        public List<EntidadTipo> Listar()
-        {
-            return db.EntidadTipos.ToList();
-        }
-
-        public EntidadTipo ObtenerPorId(int id)
-        {
-            var entidadTipo = db.EntidadTipos.Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Receta no encontrado");
-            return entidadTipo;
-        }
-
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
-        public void Guardar()
-        {
-            db.SaveChanges();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
         }
     }
 }

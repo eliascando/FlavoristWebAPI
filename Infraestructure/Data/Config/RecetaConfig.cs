@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,7 +8,7 @@ namespace Infraestructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Receta> builder)
         {
-            builder.ToTable("Receta");
+            builder.ToTable("Recetas");
 
             builder.Property(p => p.Id).IsRequired();
             builder.Property(p => p.UsuarioID).IsRequired();
@@ -21,7 +21,6 @@ namespace Infraestructure.Data.Config
             builder.Property(p => p.DificultadID).IsRequired();
             builder.Property(p => p.Porciones).IsRequired();
             builder.Property(p => p.Costo).IsRequired();
-            builder.Property(p => p.EventoID).IsRequired();
             
             builder.HasKey(p => p.Id);
         }

@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
-using Domain;
+using Domain.Entities;
+using Domain.Entities.Catalog;
 using Domain.Interfaces.Repository;
 
 namespace Application.Services
@@ -47,11 +48,11 @@ namespace Application.Services
     }
 
     public class CatalogoServiceUsuarioTipo
-        :IServiceBase<UsuarioTipo, Guid>
+        :IServiceBase<UsuarioTipo, int>
     {
-           private readonly IRepositoryBase<UsuarioTipo, Guid> _reposUsuarioTipo;
+           private readonly IRepositoryBase<UsuarioTipo, int> _reposUsuarioTipo;
 
-        public CatalogoServiceUsuarioTipo(IRepositoryBase<UsuarioTipo, Guid> reposUsuarioTipo)
+        public CatalogoServiceUsuarioTipo(IRepositoryBase<UsuarioTipo, int> reposUsuarioTipo)
         {
             _reposUsuarioTipo = reposUsuarioTipo;
         }
@@ -61,7 +62,6 @@ namespace Application.Services
             if (entidad == null)
                 throw new ArgumentNullException("UsuarioTipo", "No se puede agregar un usuario tipo nulo");
 
-            entidad.Id = Guid.NewGuid();
             var usuarioTipo = _reposUsuarioTipo.Agregar(entidad);
             _reposUsuarioTipo.Guardar();
             return usuarioTipo;
@@ -82,7 +82,7 @@ namespace Application.Services
             return _reposUsuarioTipo.Listar();
         }
 
-        public UsuarioTipo ObtenerPorId(Guid id)
+        public UsuarioTipo ObtenerPorId(int id)
         {
             var resultado = _reposUsuarioTipo.ObtenerPorId(id) ?? throw new Exception("UsuarioTipo no encontrado");
             return resultado;
@@ -297,48 +297,6 @@ namespace Application.Services
         public EventoTipo ObtenerPorId(int id)
         {
             var resultado = _reposEventoTipo.ObtenerPorId(id) ?? throw new Exception("EventoTipo no encontrado");
-            return resultado;
-        }
-    }
-
-    public class CatalogoServiceEntidadTipo
-        :IServiceBase<EntidadTipo, int>
-    {
-        private readonly IRepositoryBase<EntidadTipo, int> _reposEntidadTipo;
-
-        public CatalogoServiceEntidadTipo(IRepositoryBase<EntidadTipo, int> reposEntidadTipo)
-        {
-            _reposEntidadTipo = reposEntidadTipo;
-        }
-
-        public EntidadTipo Agregar(EntidadTipo entidad)
-        {
-            if (entidad == null)
-                throw new ArgumentNullException("EntidadTipo", "No se puede agregar un entidad tipo nulo");
-
-            var entidadTipo = _reposEntidadTipo.Agregar(entidad);
-            _reposEntidadTipo.Guardar();
-            return entidadTipo;
-        }
-
-        public EntidadTipo Editar(EntidadTipo entidad)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Eliminar(EntidadTipo entidad)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<EntidadTipo> Listar()
-        {
-            return _reposEntidadTipo.Listar();
-        }
-
-        public EntidadTipo ObtenerPorId(int id)
-        {
-            var resultado = _reposEntidadTipo.ObtenerPorId(id) ?? throw new Exception("EntidadTipo no encontrado");
             return resultado;
         }
     }

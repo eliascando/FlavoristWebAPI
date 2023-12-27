@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain;
+using Domain.Entities;
 using Application.Services;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
@@ -17,29 +17,42 @@ namespace FlavoristWebAPI.Controllers
         PostService CrearServicio()
         {
             DBContext db = new DBContext();
-            
-            PostRepository repo = new PostRepository(db);
-            RecetaPasoRepository repoRecetaPaso = new RecetaPasoRepository(db);
-            RecetaIngredienteRepository repoRecetaIngrediente = new RecetaIngredienteRepository(db);
 
-            PostService servicio = new PostService(repo, repoRecetaPaso, repoRecetaIngrediente);
+            PostRepository repo = new PostRepository(db);
+            EventoRepository repoEvento = new EventoRepository(db);
+            NotificacionRepository repoNotificacion = new NotificacionRepository(db);
+            PublicacionRepository repoPublicacion = new PublicacionRepository(db);
+
+
+            PostService servicio = new PostService(repo, repoEvento, repoNotificacion, repoPublicacion);
             return servicio;
         }
 
-        // GET: api/<PostController>
-        [HttpGet]
-        public ActionResult<string> Get()
+        //Obtener por usuario
+        [HttpGet("usuario/{idUser}")]
+        public ActionResult GetPorUser(Guid id)
         {
-            return null; //new string[] { "value1", "value2" };
+            var servicio = CrearServicio();
+            return Ok(servicio.ListarPorUsuario(id));
         }
 
-        // GET api/<PostController>/5
+        [HttpGet("categoria/{idCategoria}")]
+        public ActionResult GetPorCategoria(Guid id)
+        {
+            var servicio = CrearServicio();
+            return Ok(servicio.ListarPorCategoria(id));
+        }
+
+        //Obtener por id
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult GetPorID(Guid id)
         {
-            return "value";
+            var servicio = CrearServicio();
+            var respuesta = servicio.ObtenerPorId(id);
+            return Ok(respuesta);
         }
 
+        //Publicar receta
         [HttpPost]
         public ActionResult Post([FromBody] Receta receta)
         {

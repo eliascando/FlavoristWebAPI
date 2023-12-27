@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace Domain.Entities
 {
     public class Receta
     {
@@ -13,7 +13,6 @@
         public int DificultadID { get; set; }
         public int Porciones { get; set; }
         public decimal Costo { get; set; }
-        public Guid EventoID { get; set; }
         public List<RecetaPaso> RecetaPasos { get; set; }
         public List<RecetaIngrediente> RecetaIngredientes { get; set; }
     }

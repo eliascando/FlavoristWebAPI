@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,14 +8,12 @@ namespace Infraestructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Like> builder)
         {
-            builder.ToTable("Like");
+            builder.ToTable("Likes");
             builder.HasKey(e => e.Id);
 
-            builder.Property(e => e.Id).ValueGeneratedOnAdd();
-            builder.Property(e => e.EntidadID).IsRequired();
-            builder.Property(e => e.EntidadTipoID).IsRequired();
-            builder.Property(e => e.UsuarioID).IsRequired();
-            builder.Property(e => e.FechaHora).IsRequired();
+            builder.Property(e => e.Id).IsRequired();
+            builder.Property(e => e.ReferenciaID).IsRequired();
+            builder.Property(e => e.EventoTipoID).IsRequired();
             builder.Property(e => e.EventoID).IsRequired();
         }
     }   

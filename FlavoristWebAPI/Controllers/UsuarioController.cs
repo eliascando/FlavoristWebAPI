@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain;
+using Domain.Entities;
 using Application.Services;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
@@ -34,7 +34,7 @@ namespace FlavoristWebAPI.Controllers
             return Ok(servicio.ObtenerPorId(id));
         }
 
-        [HttpPost]
+        [HttpPost("crear")]
         [AllowAnonymous]
         public ActionResult Post([FromBody] Usuario usuario)
         {

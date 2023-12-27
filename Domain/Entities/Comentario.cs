@@ -1,14 +1,14 @@
-﻿namespace Domain
+﻿using Domain.Entities.Catalog;
+
+namespace Domain.Entities
 {
     public class Comentario
     {
         public Guid Id { get; set; }
         public Guid ? ComentarioPadreID { get; set; }
-        public Guid EntidadID { get; set; }
-        public int EntidadTipoID { get; set; }
-        public Guid UsuarioID { get; set; }
+        public Guid ReferenciaID { get; set; }
         public string Texto { get; set; }
-        public DateTime FechaHora { get; set; }
+        public int EventoTipoID { get; set; }
         public Guid EventoID { get; set; }
     }
 }

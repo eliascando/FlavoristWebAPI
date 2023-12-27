@@ -1,14 +1,14 @@
-﻿using Domain;
+﻿using Domain.Entities.Catalog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infraestructure.Data.Config
 {
-    public class EntidadTipoConfig : IEntityTypeConfiguration<EntidadTipo>
+    public class EventoTipoConfig : IEntityTypeConfiguration<EventoTipo>
     {
-        public void Configure(EntityTypeBuilder<EntidadTipo> builder)
+        public void Configure(EntityTypeBuilder<EventoTipo> builder)
         {
-            builder.ToTable("EntidadTipo");
+            builder.ToTable("EventoTipos");
 
 
             builder.Property(e => e.Id).ValueGeneratedOnAdd();

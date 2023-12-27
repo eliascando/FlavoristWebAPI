@@ -1,6 +1,6 @@
-﻿namespace Domain
+﻿namespace Domain.Entities.Catalog
 {
-    public class RecetaDificultad
+    public class UnidadMedida
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

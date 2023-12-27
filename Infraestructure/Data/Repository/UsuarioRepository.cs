@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infraestructure.Data.Context;
 using System;
@@ -34,15 +34,19 @@ namespace Infraestructure.Data.Repository
             return usuario;
         }
 
+        public List<Usuario> ObtenerUsuariosPorListaDeID(List<Guid> id)
+        {
+            var lista = db.Usuarios.Where(x => id.Contains(x.Id)).ToList();
+            
+            return lista;
+        }
+
         public Usuario Editar(Usuario entidad)
         {
             var usuario = db.Usuarios.Where(x => x.Id == entidad.Id).FirstOrDefault() ?? throw new Exception("Usuario no encontrado");
 
-            usuario.Nombres = entidad.Nombres;
-            usuario.Apellidos = entidad.Apellidos;
-            usuario.Correo = entidad.Correo;
             usuario.Password = entidad.Password;
-            usuario.FechaNacimiento = entidad.FechaNacimiento;
+            usuario.Correo = entidad.Correo;
 
             db.Entry(usuario).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
@@ -53,21 +57,12 @@ namespace Infraestructure.Data.Repository
         {
             var usuario = db.Usuarios.Where(x => x.Id == entidad.Id).FirstOrDefault() ?? throw new Exception("Usuario no encontrado");
 
-            db.Usuarios.Remove(usuario);
+            usuario.Estado = false;
+
+            db.Entry(usuario).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            db.SaveChanges();
         }
 
-        public void Begin()
-        {
-            db.Database.BeginTransaction();
-        }
-        public void Commit()
-        {
-            db.Database.CommitTransaction();
-        }
-        public void Rollback()
-        {
-            db.Database.RollbackTransaction();
-        }
         public void Guardar()
         {
             db.SaveChanges();
