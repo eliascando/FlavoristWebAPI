@@ -38,12 +38,19 @@ namespace FlavoristWebAPI.Controllers
         [AllowAnonymous]
         public ActionResult Post([FromBody] Usuario usuario)
         {
-            if (usuario == null)
-                return BadRequest("Debe enviar un usuario válido.");
+            try
+            {
+                if (usuario == null)
+                    return BadRequest("Debe enviar un usuario válido.");
 
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(usuario);
-            return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario creado correctamente.", usuario = respuesta }));
+                var servicio = CrearServicio();
+                var respuesta = servicio.Agregar(usuario);
+                return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario creado correctamente.", usuario = respuesta }));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message }));
+            }
         }
 
         [HttpPut("actualizar/{id}")]

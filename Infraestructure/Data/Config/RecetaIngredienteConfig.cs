@@ -11,7 +11,7 @@ namespace Infraestructure.Data.Config
             builder.ToTable("RecetaIngrediente");
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.RecetaID).IsRequired();
             builder.Property(x => x.Nombre).IsRequired();
             builder.Property(x => x.Cantidad).IsRequired();

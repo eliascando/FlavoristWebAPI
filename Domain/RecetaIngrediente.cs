@@ -2,7 +2,7 @@
 {
     public class RecetaIngrediente
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid RecetaID { get; set; }
         public string Nombre { get; set; }
         public decimal Cantidad { get; set; }

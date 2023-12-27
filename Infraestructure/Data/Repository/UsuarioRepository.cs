@@ -20,7 +20,6 @@ namespace Infraestructure.Data.Repository
 
         public Usuario Agregar(Usuario entidad)
         {
-            entidad.Id = Guid.NewGuid();
             db.Usuarios.Add(entidad);
             return entidad;
         }

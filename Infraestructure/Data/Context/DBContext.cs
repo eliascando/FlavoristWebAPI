@@ -17,6 +17,7 @@ namespace Infraestructure.Data.Context
         public DbSet<Evento> Eventos { get; set; }
         public DbSet<EventoTipo> EventoTipos { get; set; }
         public DbSet<IngredienteCategoria> IngredienteCategorias { get; set; }
+        public DbSet<Follow> Follows { get; set; }
         public DbSet<Like> Likes { get; set; } 
         public DbSet<Notificacion> Notificaciones { get; set; }
         public DbSet<Pais> Paises { get; set; }
@@ -33,7 +34,7 @@ namespace Infraestructure.Data.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=RecetasDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=Flavorist;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,6 +49,7 @@ namespace Infraestructure.Data.Context
             modelBuilder.ApplyConfiguration(new RecetaPasoConfig());
             modelBuilder.ApplyConfiguration(new UnidadMedidaConfig());
             modelBuilder.ApplyConfiguration(new UsuarioConfig());
+            modelBuilder.ApplyConfiguration(new FollowConfig());
         }
 
     }

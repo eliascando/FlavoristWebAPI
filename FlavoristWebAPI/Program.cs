@@ -7,11 +7,6 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//// Agrega la configuración del servicio de autorización
-//builder.Services.AddScoped<IServiceAuthorization<Usuario, AuthResultDTO>>(provider =>
-//    new AuthorizationService(provider.GetRequiredService<IConfiguration>()));
-
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -53,16 +48,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 // Configuración de la base de datos
 DBContext db = new();
 if (db.Database.EnsureCreated())
@@ -77,6 +62,15 @@ else
 }
 
 db.Dispose();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 
