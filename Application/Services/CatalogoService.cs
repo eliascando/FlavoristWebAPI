@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Domain.Entities;
 using Domain.Entities.Catalog;
 using Domain.Interfaces.Repository;
 

@@ -3,7 +3,7 @@
 namespace Application.Interfaces
 {
     public interface IServicePost <T, TId>
-        : IAgregar<T>, IEditar<T>, IListarReceta<T, TId>, ITransaccion
+        : IAgregar<T>, IEditar<T>, IListarReceta<T, TId>, IEliminar<TId>, ITransaccion
     {
 
     }

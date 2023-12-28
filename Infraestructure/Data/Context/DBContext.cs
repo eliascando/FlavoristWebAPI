@@ -2,12 +2,25 @@
 using Domain.Entities.Catalog;
 using Infraestructure.Data.Config;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 
 namespace Infraestructure.Data.Context
 {
     public class DBContext : DbContext
     {
+        //Constructor
+        public DBContext(DbContextOptions<DBContext> options)
+        : base(options)
+        {
+            var created = Database.EnsureCreated();
+            if (created)
+            {
+                Debug.WriteLine("No existía la base de datos. Se creó la base de datos.");
+            }
+
+        }
+
         //Catalog
         public DbSet<EventoTipo> EventoTipos { get; set; }
         public DbSet<IngredienteCategoria> IngredienteCategorias { get; set; }
@@ -30,12 +43,6 @@ namespace Infraestructure.Data.Context
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<UsuarioRecetaCategoriaFav> UsuarioRecetaCategoriaFavs { get; set; }
         public DbSet<UsuarioRecetaFav> UsuarioRecetaFavs { get; set; }
-
-        //Apply Connection String
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=Flavorist;Trusted_Connection=True;");
-        }
 
         //Apply Configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)

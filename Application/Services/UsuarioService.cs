@@ -20,7 +20,7 @@ namespace Application.Services
 
             entidad.Id = Guid.NewGuid();
             entidad.Password = BCrypt.Net.BCrypt.HashPassword(entidad.Password);
-            entidad.FechaNotificaciones = System.DateTime.Now;
+            entidad.FechaNotificaciones = DateTime.Now;
 
             var usuario = _reposUsuario.Agregar(entidad);
             _reposUsuario.Guardar();

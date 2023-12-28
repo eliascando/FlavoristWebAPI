@@ -6,48 +6,30 @@ using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
 using Newtonsoft.Json;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace FlavoristWebAPI.Controllers
 {
     [Route("api/comentario")]
     [ApiController]
     public class ComentarioController : ControllerBase
     {
-        ComentarioService CrearServicio()
-        {
-            DBContext db = new DBContext();
-            ComentarioRepository repository = new ComentarioRepository(db);
-            NotificacionRepository notificacion = new NotificacionRepository(db);
-            EventoRepository evento = new EventoRepository(db);
-            ComentarioService servicio = new ComentarioService(repository, notificacion, evento);
-            return servicio;
-        }
-        //// GET: api/<ComentarioController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        private readonly ComentarioService _comentarioService;
 
-        //// GET api/<ComentarioController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        public ComentarioController(ComentarioService comentarioService)
+        {
+            _comentarioService = comentarioService;
+        }
 
         [HttpPost("nuevo")]
         public ActionResult Post([FromBody] CommentDTO comment)
         {
             try
             {
-                var respuesta = CrearServicio().AgregarComentario(comment);
-                return Ok(respuesta);
+                var respuesta = _comentarioService.AgregarComentario(comment);
+                return Ok(new { succed = true, message = "Comentario agregado", data = respuesta });
             }
             catch (Exception ex)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message, details = ex }));
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
             }
         }
 
@@ -56,8 +38,8 @@ namespace FlavoristWebAPI.Controllers
         {
             try
             {
-                CrearServicio().EliminarComentario(id);
-                return Ok();
+                _comentarioService.EliminarComentario(id);
+                return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Comentario eliminado" }));
             }
             catch (Exception ex)
             {
@@ -70,7 +52,7 @@ namespace FlavoristWebAPI.Controllers
         {
             try
             {
-                var respuesta = CrearServicio().ObtenerComentariosPadres(id);
+                var respuesta = _comentarioService.ObtenerComentariosPadres(id);
                 return Ok(respuesta);
             }
             catch (Exception ex)
@@ -84,7 +66,7 @@ namespace FlavoristWebAPI.Controllers
         {
             try
             {
-                var respuesta = CrearServicio().ObtenerComentariosHijos(id);
+                var respuesta = _comentarioService.ObtenerComentariosHijos(id);
                 return Ok(respuesta);
             }
             catch (Exception ex)
@@ -98,7 +80,7 @@ namespace FlavoristWebAPI.Controllers
         {
             try
             {
-                var respuesta = CrearServicio().ObtenerComentariosHilosPost(id);
+                var respuesta = _comentarioService.ObtenerComentariosHilosPost(id);
                 return Ok(respuesta);
             }
             catch (Exception ex)
@@ -106,17 +88,5 @@ namespace FlavoristWebAPI.Controllers
                 return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message, details = ex }));
             }
         }
-
-        //// PUT api/<ComentarioController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<ComentarioController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

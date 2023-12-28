@@ -2,33 +2,29 @@
 using Domain.Entities;
 using Domain.DTOs;
 using Application.Interfaces;
-using Infraestructure.Data.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Infraestructure.Data.Context;
+using Domain.Interfaces.Repository;
+using Domain.Entities.Catalog;
 
 namespace Application.Services
 {
     public class AuthorizationService 
         : IServiceAuthorization<Usuario, AuthResultDTO>
     {
-        public IConfiguration _configuration;
+        private IConfiguration _configuration;
+        private IRepositoryBase<UsuarioTipo, int> _repoUsuarioTipo;
 
-        public AuthorizationService(IConfiguration configuration)
+        public AuthorizationService(
+            IConfiguration configuration,
+            IRepositoryBase<UsuarioTipo, int> repoUsuarioTipo
+        )
         {
             _configuration = configuration;
+            _repoUsuarioTipo = repoUsuarioTipo;
         }
-
-        CatalogoServiceUsuarioTipo CrearServicioCatalogo()
-        {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryUsuarioTipo repo = new CatalogoRepositoryUsuarioTipo(dB);
-            CatalogoServiceUsuarioTipo servicio = new CatalogoServiceUsuarioTipo(repo);
-            return servicio;
-        }
-
 
         public string GenerateToken(Usuario user)
         {
@@ -39,7 +35,7 @@ namespace Application.Services
             
             var key = Encoding.ASCII.GetBytes(secret);
 
-            var catalogo = CrearServicioCatalogo();
+            var usuarioTipo = _repoUsuarioTipo.ObtenerPorId(user.UsuarioTipoID);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -48,7 +44,7 @@ namespace Application.Services
                     new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, $"{user.Nombres} {user.Apellidos}"),
                     new Claim(ClaimTypes.Email, user.Correo),
-                    new Claim(ClaimTypes.Role, catalogo.ObtenerPorId(user.UsuarioTipoID).Nombre)
+                    new Claim(ClaimTypes.Role, _repoUsuarioTipo.ObtenerPorId(user.UsuarioTipoID).Nombre)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -63,16 +59,16 @@ namespace Application.Services
     public class LoginService
         : IServiceLogin<AuthDTO, Usuario>
     {
-        private LoginRepository bd;
+        private IRepositoryAuthorization<AuthDTO, Usuario> _bd;
 
-        public LoginService(LoginRepository _bd)
+        public LoginService(IRepositoryAuthorization<AuthDTO, Usuario> bd)
         {
-           bd = _bd;
+            _bd = bd;
         }
 
         public Usuario Login(AuthDTO user)
         {
-            var usuario = bd.Login(user) ?? throw new Exception("Usuario no encontrado");
+            var usuario = _bd.Login(user) ?? throw new Exception("Usuario no encontrado");
 
             if (!BCrypt.Net.BCrypt.Verify(user.Password, usuario.Password))
                 throw new Exception("Contraseña incorrecta");

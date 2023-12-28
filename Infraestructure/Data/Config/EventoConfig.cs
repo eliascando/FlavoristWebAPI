@@ -13,6 +13,7 @@ namespace Infraestructure.Data.Config
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id).IsRequired();
+            builder.Property(e => e.ReferenciaID).IsRequired();
             builder.Property(e => e.EventoTipoID).IsRequired();
             builder.Property(e => e.UsuarioID).IsRequired();
             builder.Property(e => e.FechaHora).IsRequired();

@@ -1,8 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces.Repository;
-using Domain.DTOs;
 using Infraestructure.Data.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Data.Repository
 {

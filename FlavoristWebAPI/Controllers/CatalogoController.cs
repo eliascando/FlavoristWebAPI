@@ -11,28 +11,25 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class CatalogoPaisController : ControllerBase
     {
-        CatalogoServicePais CrearServicio()
+        private readonly CatalogoServicePais _catalogoServicePais;
+
+        public CatalogoPaisController(CatalogoServicePais catalogoServicePais)
         {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryPais repo = new CatalogoRepositoryPais(dB);
-            CatalogoServicePais servicio = new CatalogoServicePais(repo);
-            return servicio;
+            _catalogoServicePais = catalogoServicePais;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ActionResult<Pais> Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_catalogoServicePais.Listar());
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
         public ActionResult<Pais> Get(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_catalogoServicePais.ObtenerPorId(id));
         }
 
         [HttpPost]
@@ -41,8 +38,7 @@ namespace FlavoristWebAPI.Controllers
             if (pais == null)
                 return BadRequest("Pais no válido.");
 
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(pais);
+            var respuesta = _catalogoServicePais.Agregar(pais);
             return Ok(respuesta);
         }
     }
@@ -51,28 +47,25 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class CatalogoUsuarioTipoController : ControllerBase
     {
-        CatalogoServiceUsuarioTipo CrearServicio()
+        private readonly CatalogoServiceUsuarioTipo _catalogoServiceUsuarioTipo;
+
+        public CatalogoUsuarioTipoController(CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo)
         {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryUsuarioTipo repo = new CatalogoRepositoryUsuarioTipo(dB);
-            CatalogoServiceUsuarioTipo servicio = new CatalogoServiceUsuarioTipo(repo);
-            return servicio;
+            _catalogoServiceUsuarioTipo = catalogoServiceUsuarioTipo;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ActionResult<UsuarioTipo> Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_catalogoServiceUsuarioTipo.Listar());
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
         public ActionResult<UsuarioTipo> Get(int id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_catalogoServiceUsuarioTipo.ObtenerPorId(id));
         }
 
         [HttpPost]
@@ -80,9 +73,8 @@ namespace FlavoristWebAPI.Controllers
         {
             if (usuarioTipo == null)
                 return BadRequest("UsuarioTipo no válido.");
-
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(usuarioTipo);
+            
+            var respuesta = _catalogoServiceUsuarioTipo.Agregar(usuarioTipo);
             return Ok(respuesta);
         }
     }
@@ -91,26 +83,23 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class CatalogoIngredienteCategoriaController : ControllerBase
     {
-        CatalogoServiceIngredienteCategoria CrearServicio()
+        private readonly CatalogoServiceIngredienteCategoria _catalogoServiceIngredienteCategoria;
+
+        public CatalogoIngredienteCategoriaController(CatalogoServiceIngredienteCategoria catalogoServiceIngredienteCategoria)
         {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryIngredienteCategoria repo = new CatalogoRepositoryIngredienteCategoria(dB);
-            CatalogoServiceIngredienteCategoria servicio = new CatalogoServiceIngredienteCategoria(repo);
-            return servicio;
+            _catalogoServiceIngredienteCategoria = catalogoServiceIngredienteCategoria;
         }
 
         [HttpGet]
         public ActionResult<IngredienteCategoria> Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_catalogoServiceIngredienteCategoria.Listar());
         }
 
         [HttpGet("{id}")]
         public ActionResult<IngredienteCategoria> Get(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_catalogoServiceIngredienteCategoria.ObtenerPorId(id));
         }
 
         [HttpPost]
@@ -119,8 +108,7 @@ namespace FlavoristWebAPI.Controllers
             if (ingredienteCategoria == null)
                 return BadRequest("IngredienteCategoria no válido.");
 
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(ingredienteCategoria);
+            var respuesta = _catalogoServiceIngredienteCategoria.Agregar(ingredienteCategoria);
             return Ok(respuesta);
         }
     }
@@ -129,26 +117,23 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class CatalogoRecetaCategoriaController : ControllerBase
     {
-        CatalogoServiceRecetaCategoria CrearServicio()
+        private readonly CatalogoServiceRecetaCategoria _catalogoServiceRecetaCategoria;
+
+        public CatalogoRecetaCategoriaController(CatalogoServiceRecetaCategoria catalogoServiceRecetaCategoria)
         {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryRecetaCategoria repo = new CatalogoRepositoryRecetaCategoria(dB);
-            CatalogoServiceRecetaCategoria servicio = new CatalogoServiceRecetaCategoria(repo);
-            return servicio;
+            _catalogoServiceRecetaCategoria = catalogoServiceRecetaCategoria;
         }
 
         [HttpGet]
         public ActionResult<RecetaCategoria> Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_catalogoServiceRecetaCategoria.Listar());
         }
 
         [HttpGet("{id}")]
         public ActionResult<RecetaCategoria> Get(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_catalogoServiceRecetaCategoria.ObtenerPorId(id));
         }
 
         [HttpPost]
@@ -157,8 +142,7 @@ namespace FlavoristWebAPI.Controllers
             if (recetaCategoria == null)
                 return BadRequest("RecetaCategoria no válido.");
 
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(recetaCategoria);
+            var respuesta = _catalogoServiceRecetaCategoria.Agregar(recetaCategoria);
             return Ok(respuesta);
         }
     }
@@ -167,26 +151,23 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class CatalogoRecetaDificultadController : ControllerBase
     {
-        CatalogoServiceRecetaDificultad CrearServicio()
+        private readonly CatalogoServiceRecetaDificultad _catalogoServiceRecetaDificultad;
+
+        public CatalogoRecetaDificultadController(CatalogoServiceRecetaDificultad catalogoServiceRecetaDificultad)
         {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryRecetaDificultad repo = new CatalogoRepositoryRecetaDificultad(dB);
-            CatalogoServiceRecetaDificultad servicio = new CatalogoServiceRecetaDificultad(repo);
-            return servicio;
+            _catalogoServiceRecetaDificultad = catalogoServiceRecetaDificultad;
         }
 
         [HttpGet]
         public ActionResult<RecetaDificultad> Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_catalogoServiceRecetaDificultad.Listar());
         }
 
         [HttpGet("{id}")]
         public ActionResult<RecetaDificultad> Get(int id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_catalogoServiceRecetaDificultad.ObtenerPorId(id));
         }
 
         [HttpPost]
@@ -195,8 +176,7 @@ namespace FlavoristWebAPI.Controllers
             if (recetaDificultad == null)
                 return BadRequest("RecetaDificultad no válido.");
 
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(recetaDificultad);
+            var respuesta = _catalogoServiceRecetaDificultad.Agregar(recetaDificultad);
             return Ok(respuesta);
         }
     }
@@ -205,26 +185,23 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class CatalogoUnidadMedidaController : ControllerBase
     {
-        CatalogoServiceUnidadMedida CrearServicio()
+        private readonly CatalogoServiceUnidadMedida _catalogoServiceUnidadMedida;
+
+        public CatalogoUnidadMedidaController(CatalogoServiceUnidadMedida catalogoServiceUnidadMedida)
         {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryUnidadMedida repo = new CatalogoRepositoryUnidadMedida(dB);
-            CatalogoServiceUnidadMedida servicio = new CatalogoServiceUnidadMedida(repo);
-            return servicio;
+            _catalogoServiceUnidadMedida = catalogoServiceUnidadMedida;
         }
 
         [HttpGet]
         public ActionResult<UnidadMedida> Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_catalogoServiceUnidadMedida.Listar());
         }
 
         [HttpGet("{id}")]
         public ActionResult<UnidadMedida> Get(int id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_catalogoServiceUnidadMedida.ObtenerPorId(id));
         }
 
         [HttpPost]
@@ -233,8 +210,7 @@ namespace FlavoristWebAPI.Controllers
             if (unidadMedida == null)
                 return BadRequest("UnidadMedida no válido.");
 
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(unidadMedida);
+            var respuesta = _catalogoServiceUnidadMedida.Agregar(unidadMedida);
             return Ok(respuesta);
         }
     }
@@ -243,26 +219,23 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class CatalogoEventoTipoController : ControllerBase
     {
-        CatalogoServiceEventoTipo CrearServicio()
+        private readonly CatalogoServiceEventoTipo _catalogoServiceEventoTipo;
+
+        public CatalogoEventoTipoController(CatalogoServiceEventoTipo catalogoServiceEventoTipo)
         {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryEventoTipo repo = new CatalogoRepositoryEventoTipo(dB);
-            CatalogoServiceEventoTipo servicio = new CatalogoServiceEventoTipo(repo);
-            return servicio;
+            _catalogoServiceEventoTipo = catalogoServiceEventoTipo;
         }
 
         [HttpGet]
         public ActionResult<EventoTipo> Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_catalogoServiceEventoTipo.Listar());
         }
 
         [HttpGet("{id}")]
         public ActionResult<EventoTipo> Get(int id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_catalogoServiceEventoTipo.ObtenerPorId(id));
         }
 
         [HttpPost]
@@ -271,8 +244,7 @@ namespace FlavoristWebAPI.Controllers
             if (eventoTipo == null)
                 return BadRequest("EventoTipo no válido.");
 
-            var servicio = CrearServicio();
-            var respuesta = servicio.Agregar(eventoTipo);
+            var respuesta = _catalogoServiceEventoTipo.Agregar(eventoTipo);
             return Ok(respuesta);
         }
     }

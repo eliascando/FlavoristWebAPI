@@ -16,9 +16,8 @@ namespace Application.Services
         public PostService(
             IRepositoryPost<Receta, Guid> repository,
             IRepositoryBase<Evento,Guid> repoEvento,
-            IRepositoryBase<Notificacion,Guid> repoNotificacion,
-            IRepositoryBase<Publicacion,Guid> repoPublicacion
-
+            IRepositoryBase<Notificacion, Guid> repoNotificacion,
+            IRepositoryBase<Publicacion, Guid> repoPublicacion
         )
         {
             _repository = repository;
@@ -29,13 +28,14 @@ namespace Application.Services
 
         public Receta Agregar(Receta entidad)
         {
-            //Nueva Publicacion, EventoTipoID = 3
+            int EventoTipoID = 3; //Nueva Receta
+
             if (entidad == null)
                 throw new ArgumentNullException("Receta", "No se puede agregar una receta nula");
             try
             {
                 entidad.Id = Guid.NewGuid();
-                entidad.FechaCreacion = System.DateTime.Now;
+                entidad.FechaCreacion = DateTime.Now;
 
                 entidad.RecetaPasos.ForEach(paso => {
                     if (paso == null)
@@ -59,24 +59,24 @@ namespace Application.Services
                 var evento = new Evento()
                 {
                     Id = Guid.NewGuid(),
-                    EventoTipoID = 3,
+                    ReferenciaID = entidad.Id,
+                    EventoTipoID = EventoTipoID,
                     UsuarioID = entidad.UsuarioID,
-                    FechaHora = System.DateTime.Now,
+                    FechaHora = DateTime.Now,
                 };
 
                 var notificacion = new Notificacion()
                 {
                     Id = Guid.NewGuid(),
-                    EventoTipoID = 3,
-                    ReferenciaID = entidad.Id,
-                    FechaHora = System.DateTime.Now,
+                    EventoID = evento.Id,
+                    FechaHora = DateTime.Now,
                 };
 
                 var publicacion = new Publicacion()
                 {
                     Id = Guid.NewGuid(),
                     ReferenciaID = entidad.Id,
-                    EventoTipoID = 3,
+                    EventoTipoID = EventoTipoID,
                     EventoID = evento.Id,
                 };
 
@@ -103,32 +103,32 @@ namespace Application.Services
 
         public List<Receta> ListarPorCategoria(Guid id)
         {
-            var resultado = _repository.ListarPorCategoria(id);
-            return resultado;
+            return _repository.ListarPorCategoria(id); ;
         }
 
         public List<Receta> ListarPorIngrediente(Guid id)
         {
-            var resultado = _repository.ListarPorIngrediente(id);
-            return resultado;
+            return _repository.ListarPorIngrediente(id); ;
         }
 
         public List<Receta> ListarPorUsuario(Guid id)
         {
-            var resultado = _repository.ListarPorUsuario(id);
-            return resultado;
+            return _repository.ListarPorUsuario(id);
         }
 
         public Receta ObtenerPorId(Guid id)
         {
-            var resultado = _repository.ObtenerPorId(id);
-            return resultado;
+            return _repository.ObtenerPorId(id);
         }
 
         public Receta Editar(Receta entidad)
         {
-            var resultado = _repository.Editar(entidad);
-            return resultado;
+            return _repository.Editar(entidad);
+        }
+
+        public void Eliminar(Guid id)
+        {
+            _repository.Eliminar(id);
         }
 
         public void Guardar()

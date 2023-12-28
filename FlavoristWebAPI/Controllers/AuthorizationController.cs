@@ -14,32 +14,21 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        public IConfiguration configuration { get; }
+        private readonly IConfiguration _configuration;
+        private readonly AuthorizationService _authorizationService;
+        private readonly LoginService _loginService;
+        private readonly CatalogoServiceUsuarioTipo _catalogoServiceUsuarioTipo;
 
-        public AuthorizationController(IConfiguration _configuration)
+        public AuthorizationController(
+            IConfiguration configuration,
+            AuthorizationService authorizationService,
+            LoginService loginService,
+            CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo)
         {
-            configuration = _configuration;
-        }
-
-        AuthorizationService CrearServicio()
-        {
-            AuthorizationService servicio = new AuthorizationService(configuration);
-            return servicio;
-
-        }
-        LoginService CrearServicioLogin()
-        {
-            DBContext dB = new DBContext();
-            LoginRepository repo = new LoginRepository(dB);
-            LoginService servicio = new LoginService(repo);
-            return servicio;
-        }
-        CatalogoServiceUsuarioTipo CrearServicioUsuarioTipo()
-        {
-            DBContext dB = new DBContext();
-            CatalogoRepositoryUsuarioTipo repo = new CatalogoRepositoryUsuarioTipo(dB);
-            CatalogoServiceUsuarioTipo servicio = new CatalogoServiceUsuarioTipo(repo);
-            return servicio;
+            _configuration = configuration;
+            _authorizationService = authorizationService;
+            _loginService = loginService;
+            _catalogoServiceUsuarioTipo = catalogoServiceUsuarioTipo;
         }
 
         [HttpPost]
@@ -51,14 +40,10 @@ namespace FlavoristWebAPI.Controllers
 
             try
             {
-                var _serviceAuthorization = CrearServicio();
-                var _serviceLogin = CrearServicioLogin();
+                var usuario = _loginService.Login(loginDTO);
+                var token = _authorizationService.GenerateToken(usuario);
 
-                var usuario = _serviceLogin.Login(loginDTO);
-                var token = _serviceAuthorization.GenerateToken(usuario);
-
-                var servicioUsuarioTipo = CrearServicioUsuarioTipo();
-                var usuarioTipo = servicioUsuarioTipo.ObtenerPorId(usuario.UsuarioTipoID).Nombre;
+                var usuarioTipo = _catalogoServiceUsuarioTipo.ObtenerPorId(usuario.UsuarioTipoID).Nombre;
 
                 var resultado = new AuthResultDTO()
                 {
@@ -70,8 +55,8 @@ namespace FlavoristWebAPI.Controllers
                 };
 
                 return Ok(resultado);
-
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(JsonConvert.SerializeObject(new { error = true, message = ex.Message }));
             }

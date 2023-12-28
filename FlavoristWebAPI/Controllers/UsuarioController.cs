@@ -12,26 +12,23 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        UsuarioService CrearServicio()
+        private readonly UsuarioService _usuarioService;
+
+        public UsuarioController(UsuarioService usuarioService)
         {
-            DBContext dB = new DBContext();
-            UsuarioRepository repo = new UsuarioRepository(dB);
-            UsuarioService servicio = new UsuarioService(repo);
-            return servicio;
+            _usuarioService = usuarioService;
         }
 
         [HttpGet]
         public ActionResult Get()
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.Listar());
+            return Ok(_usuarioService.Listar());
         }
 
         [HttpGet("{id}")]
         public ActionResult<Usuario> Get(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerPorId(id));
+            return Ok(_usuarioService.ObtenerPorId(id));
         }
 
         [HttpPost("crear")]
@@ -43,13 +40,12 @@ namespace FlavoristWebAPI.Controllers
                 if (usuario == null)
                     return BadRequest("Debe enviar un usuario válido.");
 
-                var servicio = CrearServicio();
-                var respuesta = servicio.Agregar(usuario);
-                return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario creado correctamente.", usuario = respuesta }));
+                var respuesta = _usuarioService.Agregar(usuario);
+                return Ok(new { succed = true, message = "Usuario creado correctamente.", usuario = respuesta });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message }));
+                return BadRequest(new { succed = false, message = ex.Message });
             }
         }
 
@@ -59,21 +55,19 @@ namespace FlavoristWebAPI.Controllers
             if (usuario == null)
                 return BadRequest("Debe enviar un usuario válido.");
 
-            if(id != usuario.Id)
+            if (id != usuario.Id)
                 return BadRequest("El id del usuario no coincide con el id de la URL.");
 
-            var servicio = CrearServicio();
-            servicio.Editar(usuario);
-            return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario actualizado correctamente." }));
+            _usuarioService.Editar(usuario);
+            return Ok(new { succed = true, message = "Usuario actualizado correctamente." });
         }
 
         [HttpDelete("eliminar/{id}")]
         public ActionResult Delete(Guid id)
         {
-            var servicio = CrearServicio();
-            var usuario = servicio.ObtenerPorId(id);
-            servicio.Eliminar(usuario);
-            return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Usuario eliminado correctamente." }));
+            var usuario = _usuarioService.ObtenerPorId(id);
+            _usuarioService.Eliminar(usuario);
+            return Ok(new { succed = true, message = "Usuario eliminado correctamente." });
         }
     }
 }

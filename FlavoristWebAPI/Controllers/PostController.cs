@@ -14,41 +14,31 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        PostService CrearServicio()
+        private readonly PostService _postService;
+
+        public PostController(PostService postService)
         {
-            DBContext db = new DBContext();
-
-            PostRepository repo = new PostRepository(db);
-            EventoRepository repoEvento = new EventoRepository(db);
-            NotificacionRepository repoNotificacion = new NotificacionRepository(db);
-            PublicacionRepository repoPublicacion = new PublicacionRepository(db);
-
-
-            PostService servicio = new PostService(repo, repoEvento, repoNotificacion, repoPublicacion);
-            return servicio;
+            _postService = postService;
         }
 
         //Obtener por usuario
         [HttpGet("usuario/{idUser}")]
         public ActionResult GetPorUser(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ListarPorUsuario(id));
+            return Ok(_postService.ListarPorUsuario(id));
         }
 
         [HttpGet("categoria/{idCategoria}")]
         public ActionResult GetPorCategoria(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ListarPorCategoria(id));
+            return Ok(_postService.ListarPorCategoria(id));
         }
 
         //Obtener por id
         [HttpGet("{id}")]
         public ActionResult GetPorID(Guid id)
         {
-            var servicio = CrearServicio();
-            var respuesta = servicio.ObtenerPorId(id);
+            var respuesta = _postService.ObtenerPorId(id);
             return Ok(respuesta);
         }
 
@@ -58,26 +48,34 @@ namespace FlavoristWebAPI.Controllers
         {
             try
             {
-                var servicio = CrearServicio();
-                var respuesta = servicio.Agregar(receta);
-                return Ok(receta);
+                var respuesta = _postService.Agregar(receta);
+                return Ok(respuesta);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message, details = ex }));
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
             }
         }
 
-        // PUT api/<PostController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<PostController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<PostController>/5
+        //Eliminar receta
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(Guid id)
         {
+            try
+            {
+                _postService.Eliminar(id);
+                return Ok(new { succed = true, message = "Receta eliminada" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+            }
         }
     }
 }

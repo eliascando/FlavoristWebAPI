@@ -1,7 +1,7 @@
-﻿using Domain.Interfaces.Repository;
-using Domain.Entities;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Domain.DTOs;
+using Domain.Entities;
+using Domain.Interfaces.Repository;
 
 namespace Application.Services
 {
@@ -27,20 +27,22 @@ namespace Application.Services
         {
             try
             {
-                //Nuevo Comentario, EventoTipoID = 2
+                int EventoTipoID = 2; //Nuevo Comentario
+
                 var newComment = new Comentario()
                 {
                     Id = Guid.NewGuid(),
                     ComentarioPadreID = comentario.ComentarioPadreID,
                     ReferenciaID = comentario.ReferenciaID,
                     Texto = comentario.Texto,
-                    EventoTipoID = 2
+                    EventoTipoID = EventoTipoID
                 };
 
                 var evento = new Evento()
                 {
                     Id = Guid.NewGuid(),
-                    EventoTipoID = 2,
+                    ReferenciaID = newComment.Id,
+                    EventoTipoID = EventoTipoID,
                     UsuarioID = comentario.UsuarioID,
                     FechaHora = DateTime.Now
                 };
@@ -50,8 +52,7 @@ namespace Application.Services
                 var notificacion = new Notificacion()
                 {
                     Id = Guid.NewGuid(),
-                    EventoTipoID = 2,
-                    ReferenciaID = newComment.Id,
+                    EventoID = evento.Id,
                     FechaHora = DateTime.Now
                 };
 
@@ -87,34 +88,24 @@ namespace Application.Services
             return _repository.ObtenerComentariosHijos(idComentarioPadre);
         }
 
-        public CommentThreadsDTO ObtenerComentariosHilosPost(Guid idPost)
+        public List<CommentThreadsDTO> ObtenerComentariosHilosPost(Guid idPost)
         {
-            // Obtener comentarios padres del post.
             var comentariosPadres = _repository.ObtenerComentariosPadres(idPost);
 
-            // Convertir cada comentario padre en un DTO que incluya sus comentarios hijos.
             var comentariosHilos = comentariosPadres.Select(comentarioPadre => new CommentThreadsDTO
             {
                 ReferenciaID = comentarioPadre.ReferenciaID,
                 ComentarioPadre = comentarioPadre,
-                // Llama a una función que debe ser implementada en el repositorio para obtener los comentarios hijos.
                 ComentariosHijos = ObtenerComentariosHijosDTO(comentarioPadre.Id)
             }).ToList();
 
-            // Devuelve el resultado con la referencia al post y los hilos de comentarios.
-            return new CommentThreadsDTO
-            {
-                ReferenciaID = idPost,
-                ComentariosHijos = comentariosHilos
-            };
+            return comentariosHilos;
         }
 
         private List<CommentThreadsDTO> ObtenerComentariosHijosDTO(Guid idComentarioPadre)
         {
-            // Obtener los comentarios hijos directamente del repositorio.
             var comentariosHijos = _repository.ObtenerComentariosHijos(idComentarioPadre);
 
-            // Para cada comentario hijo, obtener sus propios comentarios hijos recursivamente.
             return comentariosHijos.Select(comentarioHijo => new CommentThreadsDTO
             {
                 ReferenciaID = comentarioHijo.ReferenciaID,

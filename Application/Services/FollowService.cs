@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.DTOs;
 using Domain.Entities;
-using Domain.Interfaces;
 using Domain.Interfaces.Repository;
 
 namespace Application.Services
@@ -29,26 +28,27 @@ namespace Application.Services
 
         public Follow Agregar(Follow entidad)
         {
-            //Nuevo Seguidor, EventoTipoID = 4
+            int EntidadTipoID = 4; //Nuevo Seguidor
+
             entidad.Id = Guid.NewGuid();
 
             var evento = new Evento()
             {
                 Id = Guid.NewGuid(),
-                EventoTipoID = 4,
+                EventoTipoID = EntidadTipoID,
                 UsuarioID = entidad.SeguidorID,
-                FechaHora = System.DateTime.Now
+                ReferenciaID = entidad.Id,
+                FechaHora = DateTime.Now
             };
 
             var notificacion = new Notificacion()
             {
                 Id = Guid.NewGuid(),
-                EventoTipoID = 4,
-                ReferenciaID = entidad.Id,
-                FechaHora = System.DateTime.Now
+                EventoID = evento.Id,
+                FechaHora = DateTime.Now
             };
 
-            entidad.EventoTipoID = 4; //Seguidor
+            entidad.EventoTipoID = EntidadTipoID;
             entidad.EventoID = evento.Id;
 
             var guardado = _repository.Agregar(entidad);

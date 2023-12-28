@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Entities.Catalog;
+﻿using Domain.Entities.Catalog;
 using Domain.Interfaces.Repository;
 using Infraestructure.Data.Context;
 

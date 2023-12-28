@@ -3,8 +3,7 @@
     public class Notificacion
     {
         public Guid Id { get; set; }
-        public int EventoTipoID { get; set; }
-        public Guid ReferenciaID { get; set; }
+        public Guid EventoID { get; set; }
         public DateTime FechaHora { get; set; }
     }
 }

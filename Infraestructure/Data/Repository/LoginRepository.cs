@@ -1,21 +1,16 @@
 ﻿using Domain.Entities;
 using Domain.DTOs;
 using Domain.Interfaces.Repository;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infraestructure.Data.Context;
 
 namespace Infraestructure.Data.Repository
 {
     public class LoginRepository
         : IRepositoryAuthorization<AuthDTO, Usuario>
     {
-        private DbContext db;
+        private DBContext db;
 
-        public LoginRepository(DbContext _db)
+        public LoginRepository(DBContext _db)
         {
             db = _db;
         }

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Infraestructure.Data.Context;
 using Domain.Interfaces.Repository;
-
-
 
 namespace Infraestructure.Data.Repository
 {

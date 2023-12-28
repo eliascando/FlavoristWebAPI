@@ -12,30 +12,23 @@ namespace FlavoristWebAPI.Controllers
     [ApiController]
     public class FollowController : ControllerBase
     {
-        FollowService CrearServicio()
-        {
-            DBContext db = new DBContext();
-            FollowRepository followRepository = new FollowRepository(db);
-            FollowsRepository followsRepository = new FollowsRepository(db);
-            NotificacionRepository notificacionRepository = new NotificacionRepository(db);
-            EventoRepository eventoRepository = new EventoRepository(db);
+        private readonly FollowService _followService;
 
-            FollowService servicio = new FollowService(followRepository, followsRepository, eventoRepository, notificacionRepository);
-            return servicio;
+        public FollowController(FollowService followService)
+        {
+            _followService = followService;
         }
 
         [HttpGet("followers/{id}")]
-        public ActionResult Get(Guid id)
+        public ActionResult GetFollowers(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerSeguidores(id));
+            return Ok(_followService.ObtenerSeguidores(id));
         }
 
         [HttpGet("following/{id}")]
         public ActionResult GetFollowing(Guid id)
         {
-            var servicio = CrearServicio();
-            return Ok(servicio.ObtenerSeguidos(id));
+            return Ok(_followService.ObtenerSeguidos(id));
         }
 
         [HttpPost]
@@ -43,8 +36,7 @@ namespace FlavoristWebAPI.Controllers
         {
             try
             {
-                var servicio = CrearServicio();
-                var respuesta = servicio.Agregar(follow);
+                var respuesta = _followService.Agregar(follow);
                 return Ok(respuesta);
             }
             catch (Exception ex)
