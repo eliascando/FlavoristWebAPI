@@ -38,11 +38,6 @@ namespace Infraestructure.Data.Repository
             return notificacion;
         }
 
-        public Notificacion ObtenerPorUsuario(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Notificacion Editar(Notificacion entidad)
         {
            throw new NotImplementedException();

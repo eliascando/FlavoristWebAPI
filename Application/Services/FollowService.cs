@@ -63,12 +63,12 @@ namespace Application.Services
 
         public Follow Editar(Follow entidad)
         {
-            throw new NotImplementedException();
+            throw new Exception("No se puede editar un follow");
         }
 
         public void Eliminar(Follow entidad)
         {
-            throw new NotImplementedException();
+            _repository.Eliminar(entidad);
         }
 
         public List<Follow> Listar()

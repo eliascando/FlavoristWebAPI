@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Catalog;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Like
     {

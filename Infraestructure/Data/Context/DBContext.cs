@@ -31,11 +31,13 @@ namespace Infraestructure.Data.Context
         public DbSet<UsuarioRecetaCategoriaFav> UsuarioRecetaCategoriaFavs { get; set; }
         public DbSet<UsuarioRecetaFav> UsuarioRecetaFavs { get; set; }
 
+        //Apply Connection String
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=Flavorist;Trusted_Connection=True;");
         }
 
+        //Apply Configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ComentarioConfig());

@@ -11,7 +11,7 @@ namespace Infraestructure.Data.Config
             builder.ToTable("Comentarios");
 
             builder.Property(e => e.Id).IsRequired();
-            builder.Property(e => e.ComentarioPadreID).IsRequired();
+            builder.Property(e => e.ComentarioPadreID).IsRequired(false);
             builder.Property(e => e.ReferenciaID).IsRequired();
             builder.Property(e => e.Texto).IsRequired();
             builder.Property(e => e.EventoTipoID).IsRequired();

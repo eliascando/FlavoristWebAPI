@@ -91,21 +91,12 @@ namespace Application.Services
                 _notificacion.Guardar();
                 _repository.Guardar();
 
-                //Guardar transaccion
-                //_notificacion.Commit();
-                //_evento.Commit();
-                //_repository.Commit();
-
                 //Retornar resultado
                 return resultado;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                //Revertir transaccion
-                //_evento.Rollback();
-                //_notificacion.Rollback();
-                //_repository.Rollback();
                 throw new Exception("Error al agregar la receta");
             }
         }
