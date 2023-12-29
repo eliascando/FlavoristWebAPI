@@ -18,20 +18,20 @@ namespace FlavoristWebAPI.Controllers
 
         //Obtener por usuario
         [HttpGet("usuario/{idUser}")]
-        public ActionResult GetPorUser(Guid idUser)
+        public ActionResult<List<Receta>> GetPorUser(Guid idUser)
         {
             return Ok(_postService.ListarPorUsuario(idUser));
         }
 
         [HttpGet("categoria/{idCategoria}")]
-        public ActionResult GetPorCategoria(Guid idCategoria)
+        public ActionResult<List<Receta>> GetPorCategoria(Guid idCategoria)
         {
             return Ok(_postService.ListarPorCategoria(idCategoria));
         }
 
         //Obtener por id
         [HttpGet("{idReceta}")]
-        public ActionResult GetPorID(Guid idReceta)
+        public ActionResult<Receta> GetPorID(Guid idReceta)
         {
             var respuesta = _postService.ObtenerPorId(idReceta);
             return Ok(respuesta);
@@ -39,7 +39,7 @@ namespace FlavoristWebAPI.Controllers
 
         //Publicar receta
         [HttpPost]
-        public ActionResult Post([FromBody] Receta receta)
+        public ActionResult<Receta> Post([FromBody] Receta receta)
         {
             try
             {
@@ -52,12 +52,27 @@ namespace FlavoristWebAPI.Controllers
             }
         }
 
-        //// TODO: Implementar PUT para editar receta
-        //[HttpPut("{id}")]
+        //// Editar receta
+        [HttpPut("actualizar")]
+        public ActionResult<Object> Put([FromBody] Receta receta)
+        {
+            if (receta == null)
+                return BadRequest("Debe enviar una receta válida.");
+            try
+            {
+                _postService.Editar(receta);
+                return Ok(new { succed = true, message = "Receta actualizada correctamente." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+            }
+        }
+
 
         //Eliminar receta
         [HttpDelete("{id}")]
-        public ActionResult Delete(Guid id)
+        public ActionResult<Object> Delete(Guid id)
         {
             try
             {

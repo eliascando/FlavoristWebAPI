@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Domain.DTOs;
 using Application.Services;
+using Domain.Entities;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -17,7 +18,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Comentar receta
         [HttpPost("/api/comentar/receta")]
-        public ActionResult PostReceta([FromBody] CommentDTO comment)
+        public ActionResult<Object> PostReceta([FromBody] CommentDTO comment)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Comentar comentario
         [HttpPost("/api/comentar/comentario")]
-        public ActionResult PostComentario([FromBody] CommentDTO comment)
+        public ActionResult<Object> PostComentario([FromBody] CommentDTO comment)
         {
             try
             {
@@ -49,7 +50,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Eliminar comentario
         [HttpDelete("eliminar/{idComentario}")]
-        public ActionResult Delete(Guid idComentario)
+        public ActionResult<Object> Delete(Guid idComentario)
         {
             try
             {
@@ -64,7 +65,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Obtener comentarios PADRES de un post
         [HttpGet("padres/{idPost}")]
-        public ActionResult GetPadres(Guid idPost)
+        public ActionResult<List<Comentario>> GetPadres(Guid idPost)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Obtener comentarios HIJOS de un comentario
         [HttpGet("hijos/{idComentario}")]
-        public ActionResult GetHijos(Guid idComentario)
+        public ActionResult<List<Comentario>> GetHijos(Guid idComentario)
         {
             try
             {
@@ -94,7 +95,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Obtener hilos de un post
         [HttpGet("hilos/{idPost}")] 
-        public ActionResult GetHilos(Guid idPost)
+        public ActionResult<List<CommentThreadsDTO>> GetHilos(Guid idPost)
         {
             try
             {

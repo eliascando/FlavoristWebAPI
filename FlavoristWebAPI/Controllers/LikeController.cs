@@ -17,7 +17,7 @@ namespace FlavoristWebAPI.Controllers
         }
 
         [HttpGet("contar/{id}")]
-        public ActionResult Get(Guid id)
+        public ActionResult<Object> Get(Guid id)
         {
             var cantidad = _likeService.ObtenerCantidadLikeDePost(id);
             return Ok(new { succed = true, message = "Cantidad de likes", data = cantidad , idPost = id});
@@ -25,7 +25,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Dar like a una receta
         [HttpPost("receta")]
-        public ActionResult PostReceta([FromBody] LikeDTO like)
+        public ActionResult<Object> PostReceta([FromBody] LikeDTO like)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Dar like a un comentario
         [HttpPost("comentario")]
-        public ActionResult PostComentario([FromBody] LikeDTO like)
+        public ActionResult<Object> PostComentario([FromBody] LikeDTO like)
         {
             try
             {
@@ -56,12 +56,12 @@ namespace FlavoristWebAPI.Controllers
         }
 
         // Borrar un like
-        [HttpDelete("unlike/{idUser}/{idPost}")]
-        public ActionResult Delete(Guid idUser, Guid idPost)
+        [HttpDelete("/api/unlike/{idUser}/{idPost}")]
+        public ActionResult<Object> Delete(Guid idUser, Guid idPost)
         {
             try
             {
-                bool resultado = _likeService.EliminarPorUsuarioYPost(idUser, idPost);
+                bool resultado = _likeService.EliminarLikePorUsuarioYPost(idUser, idPost);
                 if (resultado)
                     return Ok(new { succed = true, message = "Like eliminado" });
                 else
@@ -75,7 +75,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Obtener usuarios que dieron like a un post
         [HttpGet("usuarios/{idPost}")]
-        public ActionResult GetUsuarios(Guid idPost)
+        public ActionResult<List<UserDTO>> GetUsuarios(Guid idPost)
         {
             try
             {

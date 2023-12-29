@@ -7,13 +7,14 @@ using Domain.Entities.Catalog;
 using Infraestructure.Data.Context;
 using Infraestructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
+using Infraestructure.Comunication.Mail;
 
 namespace FlavoristWebAPI.Config
 {
     public static class DependencyInjectionConfig
     {
-        // Add services to the container.
-        public static IServiceCollection AddProjectDependencies(this IServiceCollection services, IConfiguration configuration)
+        // Inject services to the container.
+        public static IServiceCollection InjectDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             // Add controllers
             services.AddControllers();
@@ -32,6 +33,9 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<FollowService>();
             services.AddScoped<PostService>();
             services.AddScoped<UsuarioService>();
+            services.AddScoped<PreferenciaCategoriaService>();
+            services.AddScoped<PreferenciaRecetaService>();
+            services.AddScoped<ObtenerNotificacionService>();
             services.AddScoped<CatalogoServicePais>();
             services.AddScoped<CatalogoServiceUsuarioTipo>();
             services.AddScoped<CatalogoServiceIngredienteCategoria>();
@@ -39,6 +43,9 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<CatalogoServiceRecetaDificultad>();
             services.AddScoped<CatalogoServiceUnidadMedida>();
             services.AddScoped<CatalogoServiceEventoTipo>();
+            services.AddScoped<SenderService>();
+            services.AddScoped<OTPService>();
+            services.AddScoped<PasswordService>();
 
             // Implement Services
             services.AddScoped<IServiceAuthorization<Usuario, AuthResultDTO>, AuthorizationService>();
@@ -49,6 +56,9 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<IServiceFollow<UserDTO, Guid, Guid, Guid>, FollowService>();
             services.AddScoped<IServicePost<Receta, Guid>, PostService>();
             services.AddScoped<IServiceBase<Usuario, Guid>, UsuarioService>();
+            services.AddScoped<IServicePreferencia<UsuarioRecetaCategoriaFav, Guid>, PreferenciaCategoriaService>();
+            services.AddScoped<IServicePreferencia<UsuarioRecetaFav, Guid>, PreferenciaRecetaService>();
+            services.AddScoped<IServiceObtenerNotificacion<NotificacionDTO, Guid>, ObtenerNotificacionService>();
             services.AddScoped<IServiceBase<Pais, Guid>, CatalogoServicePais>();
             services.AddScoped<IServiceBase<UsuarioTipo, int>, CatalogoServiceUsuarioTipo>();
             services.AddScoped<IServiceBase<IngredienteCategoria, Guid>, CatalogoServiceIngredienteCategoria>();
@@ -56,6 +66,9 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<IServiceBase<RecetaDificultad, int>, CatalogoServiceRecetaDificultad>();
             services.AddScoped<IServiceBase<UnidadMedida, int>, CatalogoServiceUnidadMedida>();
             services.AddScoped<IServiceBase<EventoTipo, int>, CatalogoServiceEventoTipo>();
+            services.AddScoped<IServiceSender<string, string, string>, SenderService>();
+            services.AddScoped<IServiceOTP<Guid>, OTPService>();
+            services.AddScoped<IServicePassword<Guid, string>, PasswordService>();
 
             // Add repositories
             services.AddScoped<UsuarioRepository>();
@@ -67,6 +80,9 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<FollowsRepository>();
             services.AddScoped<FollowRepository>();
             services.AddScoped<EventoRepository>();
+            services.AddScoped<PreferenciaCategoriaRepository>();
+            services.AddScoped<PreferenciasRecetaRepository>();
+            services.AddScoped<ObtenerNotificacionRepository>();
             services.AddScoped<ComentarioRepository>();
             services.AddScoped<CatalogoRepositoryEventoTipo>();
             services.AddScoped<CatalogoRepositoryUnidadMedida>();
@@ -75,6 +91,7 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<CatalogoRepositoryIngredienteCategoria>();
             services.AddScoped<CatalogoRepositoryUsuarioTipo>();
             services.AddScoped<CatalogoRepositoryPais>();
+            services.AddScoped<PasswordRepository>();
 
             // Implement Repositories
             services.AddScoped<IRepositoryBase<Usuario, Guid>, UsuarioRepository>();
@@ -86,6 +103,9 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<IRepositoryFollow<UserDTO, Guid, Guid, Guid>, FollowsRepository>();
             services.AddScoped<IRepositoryBase<Follow, Guid>, FollowRepository>();
             services.AddScoped<IRepositoryBase<Evento, Guid>, EventoRepository>();
+            services.AddScoped<IRepositoryPreferencia<UsuarioRecetaCategoriaFav, Guid>, PreferenciaCategoriaRepository>();
+            services.AddScoped<IRepositoryPreferencia<UsuarioRecetaFav, Guid>, PreferenciasRecetaRepository>();
+            services.AddScoped<IRepositoryObtenerNotificacion<NotificacionDTO, Guid>, ObtenerNotificacionRepository>();
             services.AddScoped<IRepositoryComentario<Comentario, Guid>, ComentarioRepository>();
             services.AddScoped<IRepositoryBase<EventoTipo, int>, CatalogoRepositoryEventoTipo>();
             services.AddScoped<IRepositoryBase<UnidadMedida, int>, CatalogoRepositoryUnidadMedida>();
@@ -94,12 +114,17 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<IRepositoryBase<IngredienteCategoria, Guid>, CatalogoRepositoryIngredienteCategoria>();
             services.AddScoped<IRepositoryBase<UsuarioTipo, int>, CatalogoRepositoryUsuarioTipo>();
             services.AddScoped<IRepositoryBase<Pais, Guid>, CatalogoRepositoryPais>();
+            services.AddScoped<IRepositoryPassword<Guid, string>, PasswordRepository>();
             #endregion
 
             // Add DBContext
             services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("Master")
                 ?? throw new ArgumentNullException("Master", "ERROR!, No existe la cadena de conexión")));
+
+            // Add Mail Config
+            services.Configure<MailConfig>(configuration.GetSection("MailConfig") 
+                ?? throw new ArgumentNullException("MailConfig", "ERROR!, No existe la sección de configuración de correo"));
 
             // Add CORS
             services.AddCors(options =>

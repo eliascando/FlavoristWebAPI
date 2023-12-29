@@ -29,12 +29,7 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public bool EliminarLikePorUsuarioYPost(Guid usuario, Guid referenciaId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool EliminarPorUsuarioYPost(Guid usuario, Guid post)
+        public bool EliminarLikePorUsuarioYPost(Guid usuario, Guid post)
         {
             return _repository.EliminarLikePorUsuarioYPost(usuario, post);
         }

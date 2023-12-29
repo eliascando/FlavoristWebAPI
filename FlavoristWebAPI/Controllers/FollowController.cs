@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Domain.DTOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,21 +20,21 @@ namespace FlavoristWebAPI.Controllers
 
         // Obtener seguidores de un usuario
         [HttpGet("followers/{idUser}")]
-        public ActionResult GetFollowers(Guid idUser)
+        public ActionResult<List<UserDTO>> GetFollowers(Guid idUser)
         {
             return Ok(_followService.ObtenerSeguidores(idUser));
         }
 
         // Obtener seguidos de un usuario
         [HttpGet("following/{idUser}")]
-        public ActionResult GetFollowing(Guid idUser)
+        public ActionResult<List<UserDTO>> GetFollowing(Guid idUser)
         {
             return Ok(_followService.ObtenerSeguidos(idUser));
         }
 
         // Seguir a un usuario
         [HttpPost("follow")]
-        public ActionResult Post([FromBody] Follow follow)
+        public ActionResult<Follow> Post([FromBody] Follow follow)
         {
             try
             {
@@ -48,7 +49,7 @@ namespace FlavoristWebAPI.Controllers
 
         // Dejar de seguir a un usuario
         [HttpDelete("unfollow/{idSeguidor}/{idSeguido}")]
-        public ActionResult Delete(Guid idSeguidor, Guid idSeguido)
+        public ActionResult<Object> Delete(Guid idSeguidor, Guid idSeguido)
         {
             try
             {

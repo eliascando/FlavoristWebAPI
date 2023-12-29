@@ -70,7 +70,11 @@ namespace Infraestructure.Data.Repository
 
         public Receta Editar(Receta entidad)
         {
-            throw new NotImplementedException();
+            var recetaEditada = entidad;
+
+            db.Recetas.Update(entidad);
+            db.SaveChanges();
+            return recetaEditada;
         }
 
         public void Eliminar(Guid id)

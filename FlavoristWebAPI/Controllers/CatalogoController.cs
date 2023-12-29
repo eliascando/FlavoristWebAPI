@@ -42,42 +42,6 @@ namespace FlavoristWebAPI.Controllers
         }
     }
 
-    //[Route("api/catalogo/usuariotipo")]
-    //[ApiController]
-    //public class CatalogoUsuarioTipoController : ControllerBase
-    //{
-    //    private readonly CatalogoServiceUsuarioTipo _catalogoServiceUsuarioTipo;
-
-    //    public CatalogoUsuarioTipoController(CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo)
-    //    {
-    //        _catalogoServiceUsuarioTipo = catalogoServiceUsuarioTipo;
-    //    }
-
-    //    [HttpGet]
-    //    [AllowAnonymous]
-    //    public ActionResult<UsuarioTipo> Get()
-    //    {
-    //        return Ok(_catalogoServiceUsuarioTipo.Listar());
-    //    }
-
-    //    [HttpGet("{id}")]
-    //    [AllowAnonymous]
-    //    public ActionResult<UsuarioTipo> Get(int id)
-    //    {
-    //        return Ok(_catalogoServiceUsuarioTipo.ObtenerPorId(id));
-    //    }
-
-    //    [HttpPost]
-    //    public ActionResult Post([FromBody] UsuarioTipo usuarioTipo)
-    //    {
-    //        if (usuarioTipo == null)
-    //            return BadRequest("UsuarioTipo no válido.");
-            
-    //        var respuesta = _catalogoServiceUsuarioTipo.Agregar(usuarioTipo);
-    //        return Ok(respuesta);
-    //    }
-    //}
-
     [Route("api/catalogo/ingredientecategoria")]
     [ApiController]
     public class CatalogoIngredienteCategoriaController : ControllerBase
@@ -214,6 +178,7 @@ namespace FlavoristWebAPI.Controllers
         }
     }
 
+    #region NO SE USA
     //[Route("api/catalogo/eventotipo")]
     //[ApiController]
     //public class CatalogoEventoTipoController : ControllerBase
@@ -247,4 +212,41 @@ namespace FlavoristWebAPI.Controllers
     //        return Ok(respuesta);
     //    }
     //}
+
+    //[Route("api/catalogo/usuariotipo")]
+    //[ApiController]
+    //public class CatalogoUsuarioTipoController : ControllerBase
+    //{
+    //    private readonly CatalogoServiceUsuarioTipo _catalogoServiceUsuarioTipo;
+
+    //    public CatalogoUsuarioTipoController(CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo)
+    //    {
+    //        _catalogoServiceUsuarioTipo = catalogoServiceUsuarioTipo;
+    //    }
+
+    //    [HttpGet]
+    //    [AllowAnonymous]
+    //    public ActionResult<UsuarioTipo> Get()
+    //    {
+    //        return Ok(_catalogoServiceUsuarioTipo.Listar());
+    //    }
+
+    //    [HttpGet("{id}")]
+    //    [AllowAnonymous]
+    //    public ActionResult<UsuarioTipo> Get(int id)
+    //    {
+    //        return Ok(_catalogoServiceUsuarioTipo.ObtenerPorId(id));
+    //    }
+
+    //    [HttpPost]
+    //    public ActionResult Post([FromBody] UsuarioTipo usuarioTipo)
+    //    {
+    //        if (usuarioTipo == null)
+    //            return BadRequest("UsuarioTipo no válido.");
+
+    //        var respuesta = _catalogoServiceUsuarioTipo.Agregar(usuarioTipo);
+    //        return Ok(respuesta);
+    //    }
+    //}
+    #endregion
 }

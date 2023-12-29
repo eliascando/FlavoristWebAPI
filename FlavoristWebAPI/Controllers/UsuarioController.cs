@@ -16,19 +16,13 @@ namespace FlavoristWebAPI.Controllers
             _usuarioService = usuarioService;
         }
 
-        [HttpGet]
-        public ActionResult Get()
-        {
-            return Ok(_usuarioService.Listar());
-        }
-
         [HttpGet("{id}")]
         public ActionResult<Usuario> Get(Guid id)
         {
             return Ok(_usuarioService.ObtenerPorId(id));
         }
 
-        [HttpPost("crear")]
+        [HttpPost("registrar")]
         [AllowAnonymous]
         public ActionResult Post([FromBody] Usuario usuario)
         {

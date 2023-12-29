@@ -17,7 +17,7 @@ namespace FlavoristWebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<Object>> Get()
         {
             var report = await _healthCheckService.CheckHealthAsync();
             var result = new

@@ -3,8 +3,8 @@ using Infraestructure.Authorization.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Project Dependencies
-builder.Services.AddProjectDependencies(builder.Configuration);
+// Inject Dependencies
+builder.Services.InjectDependencies(builder.Configuration);
 
 // Add Jwt Authentication
 builder.Services.AddJwtAuthentication(builder.Configuration);

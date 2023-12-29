@@ -72,40 +72,37 @@ namespace Infraestructure.Data.Repository
             return listaUsuarios;
         }
 
-
-        //Eliminar like
+        // Eliminar like por usuario y post
         public bool EliminarLikePorUsuarioYPost(Guid idUsuario, Guid idReferencia)
         {
-            Debug.WriteLine("idUsuario: " + idUsuario);
-            Debug.WriteLine("idPost: " + idReferencia);
-
             var likes = db.Likes.Where(x => x.ReferenciaID == idReferencia).ToList();
 
+            var eventosDelUsuario = db.Eventos.Where(e => e.UsuarioID == idUsuario).Select(e => e.Id).ToList();
+            var likeDelUsuario = likes.FirstOrDefault(l => eventosDelUsuario.Contains(l.EventoID));
 
-            var evento = new List<Evento>();
-            var likeFiltrado = new List<Like>();
-            var notificaciones = new List<Notificacion>();
+            if (likeDelUsuario == null)
+            {
+                return false;
+            }
 
-            likes.ForEach(
-                like =>
-                {
-                    var eventos = db.Eventos.Where(x => x.Id == like.EventoID && x.UsuarioID == idUsuario).ToList() ?? throw new Exception("Evento no encontrado");
-                    
-                    evento.AddRange(eventos);
-                }
-            );
+            var evento = db.Eventos.FirstOrDefault(e => e.Id == likeDelUsuario.EventoID);
+            var notificacion = db.Notificaciones.FirstOrDefault(n => n.EventoID == likeDelUsuario.EventoID);
 
-            likeFiltrado = likes.Where(x => x.EventoID == evento[0].Id).ToList() ?? throw new Exception("Like no encontrado");
+            if (evento == null || notificacion == null)
+            {
+                return false;
+            }
 
-
-            notificaciones = db.Notificaciones.Where(x => x.EventoID == evento[0].Id).ToList() ?? throw new Exception("Notificacion no encontrada");
-
-            db.Likes.Remove(likeFiltrado[0]);
-            db.Eventos.Remove(evento[0]);
-            db.Notificaciones.Remove(notificaciones[0]);
+            // Elimina el like, el evento y la notificación.
+            db.Likes.Remove(likeDelUsuario);
+            db.Eventos.Remove(evento);
+            db.Notificaciones.Remove(notificacion);
 
             db.SaveChanges();
-            return (db.Notificaciones.Where(x => x.EventoID == evento[0].Id).FirstOrDefault() == null);
+
+            return !db.Likes.Any(l => l.Id == likeDelUsuario.Id) &&
+                   !db.Eventos.Any(e => e.Id == evento.Id) &&
+                   !db.Notificaciones.Any(n => n.Id == notificacion.Id);
         }
 
         public Like DarLikeDesdeDTO(LikeDTO entidadDTO)
