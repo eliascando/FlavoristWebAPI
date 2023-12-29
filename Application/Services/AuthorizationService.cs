@@ -14,8 +14,8 @@ namespace Application.Services
     public class AuthorizationService 
         : IServiceAuthorization<Usuario, AuthResultDTO>
     {
-        private IConfiguration _configuration;
-        private IRepositoryBase<UsuarioTipo, int> _repoUsuarioTipo;
+        private readonly IConfiguration _configuration;
+        private readonly IRepositoryBase<UsuarioTipo, int> _repoUsuarioTipo;
 
         public AuthorizationService(
             IConfiguration configuration,

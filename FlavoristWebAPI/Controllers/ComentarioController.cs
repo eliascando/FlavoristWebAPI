@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Domain.DTOs;
-using Domain.Entities;
 using Application.Services;
-using Infraestructure.Data.Context;
-using Infraestructure.Data.Repository;
-using Newtonsoft.Json;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -19,11 +15,13 @@ namespace FlavoristWebAPI.Controllers
             _comentarioService = comentarioService;
         }
 
-        [HttpPost("nuevo")]
-        public ActionResult Post([FromBody] CommentDTO comment)
+        // Comentar receta
+        [HttpPost("/api/comentar/receta")]
+        public ActionResult PostReceta([FromBody] CommentDTO comment)
         {
             try
             {
+                comment.EntidadTipoID = 2; // Receta
                 var respuesta = _comentarioService.AgregarComentario(comment);
                 return Ok(new { succed = true, message = "Comentario agregado", data = respuesta });
             }
@@ -33,59 +31,79 @@ namespace FlavoristWebAPI.Controllers
             }
         }
 
-        [HttpDelete("eliminar/{id}")]
-        public ActionResult Delete(Guid id)
+        // Comentar comentario
+        [HttpPost("/api/comentar/comentario")]
+        public ActionResult PostComentario([FromBody] CommentDTO comment)
         {
             try
             {
-                _comentarioService.EliminarComentario(id);
-                return Ok(JsonConvert.SerializeObject(new { succed = true, message = "Comentario eliminado" }));
+                comment.EntidadTipoID = 3; // Comentario
+                var respuesta = _comentarioService.AgregarComentario(comment);
+                return Ok(new { succed = true, message = "Comentario agregado", data = respuesta });
             }
             catch (Exception ex)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message, details = ex }));
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
             }
         }
 
-        [HttpGet("padres/{id}")]
-        public ActionResult GetPadres(Guid id)
+        // Eliminar comentario
+        [HttpDelete("eliminar/{idComentario}")]
+        public ActionResult Delete(Guid idComentario)
         {
             try
             {
-                var respuesta = _comentarioService.ObtenerComentariosPadres(id);
+                _comentarioService.EliminarComentario(idComentario);
+                return Ok(new { succed = true, message = "Comentario eliminado" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+            }
+        }
+
+        // Obtener comentarios PADRES de un post
+        [HttpGet("padres/{idPost}")]
+        public ActionResult GetPadres(Guid idPost)
+        {
+            try
+            {
+                var respuesta = _comentarioService.ObtenerComentariosPadres(idPost);
                 return Ok(respuesta);
             }
             catch (Exception ex)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message, details = ex }));
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
             }
         }
 
-        [HttpGet("hijos/{id}")]
-        public ActionResult GetHijos(Guid id)
+        // Obtener comentarios HIJOS de un comentario
+        [HttpGet("hijos/{idComentario}")]
+        public ActionResult GetHijos(Guid idComentario)
         {
             try
             {
-                var respuesta = _comentarioService.ObtenerComentariosHijos(id);
+                var respuesta = _comentarioService.ObtenerComentariosHijos(idComentario);
                 return Ok(respuesta);
             }
             catch (Exception ex)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message, details = ex }));
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
             }
         }
 
-        [HttpGet("hilos/{id}")] 
-        public ActionResult GetHilos(Guid id)
+        // Obtener hilos de un post
+        [HttpGet("hilos/{idPost}")] 
+        public ActionResult GetHilos(Guid idPost)
         {
             try
             {
-                var respuesta = _comentarioService.ObtenerComentariosHilosPost(id);
+                var respuesta = _comentarioService.ObtenerComentariosHilosPost(idPost);
                 return Ok(respuesta);
             }
             catch (Exception ex)
             {
-                return BadRequest(JsonConvert.SerializeObject(new { succed = false, message = ex.Message, details = ex }));
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
             }
         }
     }

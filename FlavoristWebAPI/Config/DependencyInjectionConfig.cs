@@ -23,9 +23,11 @@ namespace FlavoristWebAPI.Config
             // Add swagger
             services.AddSwaggerGen();
 
-            //Catalog services
+            #region CustomServices
+            // Add services
             services.AddScoped<AuthorizationService>();
             services.AddScoped<LoginService>();
+            services.AddScoped<LikeService>();
             services.AddScoped<ComentarioService>();
             services.AddScoped<FollowService>();
             services.AddScoped<PostService>();
@@ -41,9 +43,10 @@ namespace FlavoristWebAPI.Config
             // Implement Services
             services.AddScoped<IServiceAuthorization<Usuario, AuthResultDTO>, AuthorizationService>();
             services.AddScoped<IServiceLogin<AuthDTO, Usuario>, LoginService>();
+            services.AddScoped<IServiceLike<Like, LikeDTO, UserDTO, Guid, Guid>, LikeService>();
             services.AddScoped<IServiceComentario<Comentario, CommentDTO, Guid>, ComentarioService>();
             services.AddScoped<IServiceBase<Follow, Guid>, FollowService>();
-            services.AddScoped<IServiceFollow<FollowsDTO, Guid>, FollowService>();
+            services.AddScoped<IServiceFollow<UserDTO, Guid, Guid, Guid>, FollowService>();
             services.AddScoped<IServicePost<Receta, Guid>, PostService>();
             services.AddScoped<IServiceBase<Usuario, Guid>, UsuarioService>();
             services.AddScoped<IServiceBase<Pais, Guid>, CatalogoServicePais>();
@@ -57,6 +60,7 @@ namespace FlavoristWebAPI.Config
             // Add repositories
             services.AddScoped<UsuarioRepository>();
             services.AddScoped<PublicacionRepository>();
+            services.AddScoped<LikeRepository>();
             services.AddScoped<PostRepository>();
             services.AddScoped<NotificacionRepository>();
             services.AddScoped<LoginRepository>();
@@ -75,10 +79,11 @@ namespace FlavoristWebAPI.Config
             // Implement Repositories
             services.AddScoped<IRepositoryBase<Usuario, Guid>, UsuarioRepository>();
             services.AddScoped<IRepositoryBase<Publicacion, Guid>, PublicacionRepository>();
+            services.AddScoped<IRepositoryLike<Like,LikeDTO, UserDTO, Guid, Guid>, LikeRepository>();
             services.AddScoped<IRepositoryPost<Receta, Guid>, PostRepository>();
             services.AddScoped<IRepositoryBase<Notificacion, Guid>, NotificacionRepository>();
             services.AddScoped<IRepositoryAuthorization<AuthDTO, Usuario>, LoginRepository>();
-            services.AddScoped<IRepositoryFollow<FollowsDTO, Guid>, FollowsRepository>();
+            services.AddScoped<IRepositoryFollow<UserDTO, Guid, Guid, Guid>, FollowsRepository>();
             services.AddScoped<IRepositoryBase<Follow, Guid>, FollowRepository>();
             services.AddScoped<IRepositoryBase<Evento, Guid>, EventoRepository>();
             services.AddScoped<IRepositoryComentario<Comentario, Guid>, ComentarioRepository>();
@@ -89,10 +94,29 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<IRepositoryBase<IngredienteCategoria, Guid>, CatalogoRepositoryIngredienteCategoria>();
             services.AddScoped<IRepositoryBase<UsuarioTipo, int>, CatalogoRepositoryUsuarioTipo>();
             services.AddScoped<IRepositoryBase<Pais, Guid>, CatalogoRepositoryPais>();
+            #endregion
 
             // Add DBContext
             services.AddDbContext<DBContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("Master")));
+                options.UseSqlServer(configuration.GetConnectionString("Master")
+                ?? throw new ArgumentNullException("Master", "ERROR!, No existe la cadena de conexión")));
+
+            // Add CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", 
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
+            // Add HealthChecks
+            services.AddHealthChecks()
+                .AddSqlServer(configuration.GetConnectionString("Master")
+                ?? throw new ArgumentNullException("Master", "ERROR!, No existe la cadena de conexión"));
 
             return services;
         }

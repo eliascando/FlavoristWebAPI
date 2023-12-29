@@ -6,5 +6,6 @@
         public Guid UsuarioID { get; set; }
         public Guid ReferenciaID { get; set; }
         public string Texto { get; set; }
+        public int EntidadTipoID { get; set; }
     }
 }

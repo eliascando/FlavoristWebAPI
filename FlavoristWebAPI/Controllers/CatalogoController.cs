@@ -1,12 +1,11 @@
 ﻿using Application.Services;
 using Domain.Entities.Catalog;
-using Infraestructure.Data.Context;
-using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlavoristWebAPI.Controllers
 {
+    // Estos son los catalogos
     [Route("api/catalogo/pais")]
     [ApiController]
     public class CatalogoPaisController : ControllerBase
@@ -43,41 +42,41 @@ namespace FlavoristWebAPI.Controllers
         }
     }
 
-    [Route("api/catalogo/usuariotipo")]
-    [ApiController]
-    public class CatalogoUsuarioTipoController : ControllerBase
-    {
-        private readonly CatalogoServiceUsuarioTipo _catalogoServiceUsuarioTipo;
+    //[Route("api/catalogo/usuariotipo")]
+    //[ApiController]
+    //public class CatalogoUsuarioTipoController : ControllerBase
+    //{
+    //    private readonly CatalogoServiceUsuarioTipo _catalogoServiceUsuarioTipo;
 
-        public CatalogoUsuarioTipoController(CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo)
-        {
-            _catalogoServiceUsuarioTipo = catalogoServiceUsuarioTipo;
-        }
+    //    public CatalogoUsuarioTipoController(CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo)
+    //    {
+    //        _catalogoServiceUsuarioTipo = catalogoServiceUsuarioTipo;
+    //    }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult<UsuarioTipo> Get()
-        {
-            return Ok(_catalogoServiceUsuarioTipo.Listar());
-        }
+    //    [HttpGet]
+    //    [AllowAnonymous]
+    //    public ActionResult<UsuarioTipo> Get()
+    //    {
+    //        return Ok(_catalogoServiceUsuarioTipo.Listar());
+    //    }
 
-        [HttpGet("{id}")]
-        [AllowAnonymous]
-        public ActionResult<UsuarioTipo> Get(int id)
-        {
-            return Ok(_catalogoServiceUsuarioTipo.ObtenerPorId(id));
-        }
+    //    [HttpGet("{id}")]
+    //    [AllowAnonymous]
+    //    public ActionResult<UsuarioTipo> Get(int id)
+    //    {
+    //        return Ok(_catalogoServiceUsuarioTipo.ObtenerPorId(id));
+    //    }
 
-        [HttpPost]
-        public ActionResult Post([FromBody] UsuarioTipo usuarioTipo)
-        {
-            if (usuarioTipo == null)
-                return BadRequest("UsuarioTipo no válido.");
+    //    [HttpPost]
+    //    public ActionResult Post([FromBody] UsuarioTipo usuarioTipo)
+    //    {
+    //        if (usuarioTipo == null)
+    //            return BadRequest("UsuarioTipo no válido.");
             
-            var respuesta = _catalogoServiceUsuarioTipo.Agregar(usuarioTipo);
-            return Ok(respuesta);
-        }
-    }
+    //        var respuesta = _catalogoServiceUsuarioTipo.Agregar(usuarioTipo);
+    //        return Ok(respuesta);
+    //    }
+    //}
 
     [Route("api/catalogo/ingredientecategoria")]
     [ApiController]
@@ -215,37 +214,37 @@ namespace FlavoristWebAPI.Controllers
         }
     }
 
-    [Route("api/catalogo/eventotipo")]
-    [ApiController]
-    public class CatalogoEventoTipoController : ControllerBase
-    {
-        private readonly CatalogoServiceEventoTipo _catalogoServiceEventoTipo;
+    //[Route("api/catalogo/eventotipo")]
+    //[ApiController]
+    //public class CatalogoEventoTipoController : ControllerBase
+    //{
+    //    private readonly CatalogoServiceEventoTipo _catalogoServiceEventoTipo;
 
-        public CatalogoEventoTipoController(CatalogoServiceEventoTipo catalogoServiceEventoTipo)
-        {
-            _catalogoServiceEventoTipo = catalogoServiceEventoTipo;
-        }
+    //    public CatalogoEventoTipoController(CatalogoServiceEventoTipo catalogoServiceEventoTipo)
+    //    {
+    //        _catalogoServiceEventoTipo = catalogoServiceEventoTipo;
+    //    }
 
-        [HttpGet]
-        public ActionResult<EventoTipo> Get()
-        {
-            return Ok(_catalogoServiceEventoTipo.Listar());
-        }
+    //    [HttpGet]
+    //    public ActionResult<EventoTipo> Get()
+    //    {
+    //        return Ok(_catalogoServiceEventoTipo.Listar());
+    //    }
 
-        [HttpGet("{id}")]
-        public ActionResult<EventoTipo> Get(int id)
-        {
-            return Ok(_catalogoServiceEventoTipo.ObtenerPorId(id));
-        }
+    //    [HttpGet("{id}")]
+    //    public ActionResult<EventoTipo> Get(int id)
+    //    {
+    //        return Ok(_catalogoServiceEventoTipo.ObtenerPorId(id));
+    //    }
 
-        [HttpPost]
-        public ActionResult Post([FromBody] EventoTipo eventoTipo)
-        {
-            if (eventoTipo == null)
-                return BadRequest("EventoTipo no válido.");
+    //    [HttpPost]
+    //    public ActionResult Post([FromBody] EventoTipo eventoTipo)
+    //    {
+    //        if (eventoTipo == null)
+    //            return BadRequest("EventoTipo no válido.");
 
-            var respuesta = _catalogoServiceEventoTipo.Agregar(eventoTipo);
-            return Ok(respuesta);
-        }
-    }
+    //        var respuesta = _catalogoServiceEventoTipo.Agregar(eventoTipo);
+    //        return Ok(respuesta);
+    //    }
+    //}
 }

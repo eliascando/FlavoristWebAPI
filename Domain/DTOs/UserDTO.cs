@@ -1,6 +1,6 @@
 ﻿namespace Domain.DTOs
 {
-    public class FollowsDTO
+    public class UserDTO
     {
         public Guid Id { get; set; }
         public string Nombres { get; set; }

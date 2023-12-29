@@ -36,7 +36,16 @@ namespace Infraestructure.Data.Repository
         {
             var follow = db.Follows.Where(x => x.Id == entidad.Id).FirstOrDefault() ?? throw new Exception("Follow no encontrado");
 
+            var evento = db.Eventos.Where(x => x.Id == follow.EventoID).FirstOrDefault() ?? throw new Exception("Evento no encontrado");
+
+            var notificacion = db.Notificaciones.Where(x => x.EventoID == evento.Id).FirstOrDefault() ?? throw new Exception("Notificacion no encontrada");
+
+
+            db.Notificaciones.Remove(notificacion);
+            db.Eventos.Remove(evento);
             db.Follows.Remove(follow);
+
+            db.SaveChanges();
         }
 
         public void Guardar()
@@ -57,7 +66,7 @@ namespace Infraestructure.Data.Repository
     }
 
     public class FollowsRepository
-        : IRepositoryFollow<FollowsDTO, Guid>
+        : IRepositoryFollow<UserDTO, Guid, Guid, Guid>
     {
         private DBContext db;
 
@@ -65,15 +74,15 @@ namespace Infraestructure.Data.Repository
         {
             db = _db;
         }
-        public List<FollowsDTO> ObtenerSeguidores(Guid id)
+        public List<UserDTO> ObtenerSeguidores(Guid id)
         {
             var ids = db.Follows.Where(x => x.SeguidoID == id).Select(x => x.SeguidorID).ToList();
             var usuarios = db.Usuarios.Where(x => ids.Contains(x.Id)).ToList();
 
-            var followers = new List<FollowsDTO>();
+            var followers = new List<UserDTO>();
 
             usuarios.ForEach(
-                x => followers.Add(new FollowsDTO
+                x => followers.Add(new UserDTO
                 {
                     Id = x.Id,
                     Nombres = x.Nombres,
@@ -86,15 +95,15 @@ namespace Infraestructure.Data.Repository
             return followers;
         }
 
-        public List<FollowsDTO> ObtenerSeguidos(Guid id)
+        public List<UserDTO> ObtenerSeguidos(Guid id)
         {
             var ids = db.Follows.Where(x => x.SeguidorID == id).Select(x => x.SeguidoID).ToList();
             var usuarios = db.Usuarios.Where(x => ids.Contains(x.Id)).ToList();
 
-            var followers = new List<FollowsDTO>();
+            var followers = new List<UserDTO>();
 
             usuarios.ForEach(
-                x => followers.Add(new FollowsDTO
+                x => followers.Add(new UserDTO
                 {
                     Id = x.Id,
                     Nombres = x.Nombres,
@@ -104,6 +113,26 @@ namespace Infraestructure.Data.Repository
                 })
             );
             return followers;
+        }
+
+        public bool EliminarPorSeguidorYSeguido(Guid seguidor, Guid seguido)
+        {
+            var follow = db.Follows.Where(x => x.SeguidorID == seguidor && x.SeguidoID == seguido).FirstOrDefault() ?? throw new Exception("Follow no encontrado");
+
+            var evento = db.Eventos.Where(x => x.Id == follow.EventoID).FirstOrDefault() ?? throw new Exception("Evento no encontrado");
+
+            var notificacion = db.Notificaciones.Where(x => x.EventoID == evento.Id).FirstOrDefault() ?? throw new Exception("Notificacion no encontrada");
+
+            db.Notificaciones.Remove(notificacion);
+            db.Eventos.Remove(evento);
+            db.Follows.Remove(follow);
+
+            db.SaveChanges();
+
+            if (db.Follows.Where(x => x.SeguidorID == seguidor && x.SeguidoID == seguido).FirstOrDefault() == null)
+                return true;
+            else
+                return false;
         }
     }
 }

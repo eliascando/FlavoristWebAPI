@@ -8,10 +8,10 @@ namespace Application.Services
     public class PostService
         : IServicePost<Receta, Guid>
     {
-        private IRepositoryPost<Receta, Guid> _repository;
-        private IRepositoryBase<Evento,Guid> _evento;
-        private IRepositoryBase<Notificacion,Guid> _notificacion;
-        private IRepositoryBase<Publicacion,Guid> _publicacion;
+        private readonly IRepositoryPost<Receta, Guid> _repository;
+        private readonly IRepositoryBase<Evento,Guid> _evento;
+        private readonly IRepositoryBase<Notificacion,Guid> _notificacion;
+        private readonly IRepositoryBase<Publicacion,Guid> _publicacion;
 
         public PostService(
             IRepositoryPost<Receta, Guid> repository,
@@ -29,6 +29,7 @@ namespace Application.Services
         public Receta Agregar(Receta entidad)
         {
             int EventoTipoID = 3; //Nueva Receta
+            int EntidadTipoID = 2; //Receta
 
             if (entidad == null)
                 throw new ArgumentNullException("Receta", "No se puede agregar una receta nula");
@@ -61,6 +62,7 @@ namespace Application.Services
                     Id = Guid.NewGuid(),
                     ReferenciaID = entidad.Id,
                     EventoTipoID = EventoTipoID,
+                    EntidadTipoID = EntidadTipoID,
                     UsuarioID = entidad.UsuarioID,
                     FechaHora = DateTime.Now,
                 };

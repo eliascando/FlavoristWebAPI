@@ -8,9 +8,9 @@ namespace Application.Services
     public class ComentarioService
         : IServiceComentario<Comentario,CommentDTO, Guid>
     {
-        private IRepositoryComentario<Comentario, Guid> _repository;
-        private IRepositoryBase<Notificacion, Guid> _notificacion;
-        private IRepositoryBase<Evento, Guid> _evento;
+        private readonly IRepositoryComentario<Comentario, Guid> _repository;
+        private readonly IRepositoryBase<Notificacion, Guid> _notificacion;
+        private readonly IRepositoryBase<Evento, Guid> _evento;
 
         public ComentarioService(
             IRepositoryComentario<Comentario, Guid> repository,
@@ -43,6 +43,7 @@ namespace Application.Services
                     Id = Guid.NewGuid(),
                     ReferenciaID = newComment.Id,
                     EventoTipoID = EventoTipoID,
+                    EntidadTipoID = comentario.EntidadTipoID,
                     UsuarioID = comentario.UsuarioID,
                     FechaHora = DateTime.Now
                 };

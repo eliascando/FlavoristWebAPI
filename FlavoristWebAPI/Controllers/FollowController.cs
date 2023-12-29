@@ -1,14 +1,12 @@
 ﻿using Application.Services;
 using Domain.Entities;
-using Infraestructure.Data.Context;
-using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FlavoristWebAPI.Controllers
 {
-    [Route("api/follow")]
+    [Route("api")]
     [ApiController]
     public class FollowController : ControllerBase
     {
@@ -19,19 +17,22 @@ namespace FlavoristWebAPI.Controllers
             _followService = followService;
         }
 
-        [HttpGet("followers/{id}")]
-        public ActionResult GetFollowers(Guid id)
+        // Obtener seguidores de un usuario
+        [HttpGet("followers/{idUser}")]
+        public ActionResult GetFollowers(Guid idUser)
         {
-            return Ok(_followService.ObtenerSeguidores(id));
+            return Ok(_followService.ObtenerSeguidores(idUser));
         }
 
-        [HttpGet("following/{id}")]
-        public ActionResult GetFollowing(Guid id)
+        // Obtener seguidos de un usuario
+        [HttpGet("following/{idUser}")]
+        public ActionResult GetFollowing(Guid idUser)
         {
-            return Ok(_followService.ObtenerSeguidos(id));
+            return Ok(_followService.ObtenerSeguidos(idUser));
         }
 
-        [HttpPost]
+        // Seguir a un usuario
+        [HttpPost("follow")]
         public ActionResult Post([FromBody] Follow follow)
         {
             try
@@ -42,6 +43,21 @@ namespace FlavoristWebAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        // Dejar de seguir a un usuario
+        [HttpDelete("unfollow/{idSeguidor}/{idSeguido}")]
+        public ActionResult Delete(Guid idSeguidor, Guid idSeguido)
+        {
+            try
+            {
+                _followService.EliminarPorSeguidorYSeguido(idSeguidor, idSeguido);
+                return Ok(new { succed = true, message = "Follow eliminado" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
             }
         }
     }

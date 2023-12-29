@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Interfaces.Repository
+﻿namespace Domain.Interfaces.Repository
 {
-    public interface IRepositoryFollow<T, TId> : IFollow<T, TId>
+    public interface IRepositoryFollow<T, TId, TFl, TFw> 
+        : IFollow<T, TId, TFl, TFw>
     {
     }
 }

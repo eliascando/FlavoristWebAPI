@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Application.Services;
-using Infraestructure.Data.Context;
-using Infraestructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json;
 
 namespace FlavoristWebAPI.Controllers
 {

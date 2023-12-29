@@ -76,10 +76,10 @@ namespace Infraestructure.Data.Repository
         public void Eliminar(Guid id)
         {
             var receta = db.Recetas.Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Receta no encontrada");
-            var recetaPasos = db.RecetaPasos.Where(x => x.RecetaID == id).ToList();
-            var recetaIngredientes = db.RecetaIngredientes.Where(x => x.RecetaID == id).ToList();
-            var likes = db.Likes.Where(x => x.ReferenciaID == id).ToList();
-            var comments = db.Comentarios.Where(x => x.ReferenciaID == id).ToList();
+            var recetaPasos = db.RecetaPasos.Where(x => x.RecetaID == id).ToList() ?? throw new Exception("RecetaPasos no encontrados");
+            var recetaIngredientes = db.RecetaIngredientes.Where(x => x.RecetaID == id).ToList() ?? throw new Exception("RecetaIngredientes no encontrados");
+            var likes = db.Likes.Where(x => x.ReferenciaID == id).ToList() ?? throw new Exception("Likes no encontrados");
+            var comments = db.Comentarios.Where(x => x.ReferenciaID == id).ToList() ?? throw new Exception("Comentarios no encontrados");
 
             // eliminar los pasos
             recetaPasos.ForEach(
@@ -112,6 +112,17 @@ namespace Infraestructure.Data.Repository
                     db.Comentarios.Remove(comment);
                 }
              );
+
+            // eliminar la publicacion, el evento y notificacion
+            var publicacion = db.Publicaciones.Where(x => x.ReferenciaID == id).FirstOrDefault() ?? throw new Exception("Publicacion no encontrada");
+            var evento = db.Eventos.Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Evento no encontrado");
+            var notificacion = db.Notificaciones.Where(x => x.EventoID == evento.Id).FirstOrDefault() ?? throw new Exception("Notificacion no encontrada");
+
+            db.Publicaciones.Remove(publicacion);
+            db.Eventos.Remove(evento);
+            db.Recetas.Remove(receta);
+
+            db.SaveChanges();
         }
 
         public void Guardar()

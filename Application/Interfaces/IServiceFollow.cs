@@ -2,8 +2,8 @@
 
 namespace Application.Interfaces
 {
-    public interface IServiceFollow <T, TId>
-        : IFollow<T, TId>
+    public interface IServiceFollow <T, TId, TFl, TFw>
+        : IFollow<T, TId, TFl, TFw>
     {
     }
 }

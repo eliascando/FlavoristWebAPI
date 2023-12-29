@@ -6,16 +6,17 @@ using Domain.Interfaces.Repository;
 namespace Application.Services
 {
     public class FollowService
-        : IServiceBase<Follow, Guid>, IServiceFollow<FollowsDTO, Guid>
+        : IServiceBase<Follow, Guid>, 
+        IServiceFollow<UserDTO, Guid, Guid, Guid>
     {
-        private IRepositoryBase<Follow, Guid> _repository;
-        private IRepositoryFollow<FollowsDTO, Guid> _repositoryFollow;
-        private IRepositoryBase<Evento, Guid> _evento;
-        private IRepositoryBase<Notificacion, Guid> _notificacion;
+        private readonly IRepositoryBase<Follow, Guid> _repository;
+        private readonly IRepositoryFollow<UserDTO, Guid, Guid, Guid> _repositoryFollow;
+        private readonly IRepositoryBase<Evento, Guid> _evento;
+        private readonly IRepositoryBase<Notificacion, Guid> _notificacion;
 
         public FollowService(
             IRepositoryBase<Follow, Guid> repository,
-            IRepositoryFollow<FollowsDTO, Guid> repositoryFollow,
+            IRepositoryFollow<UserDTO, Guid, Guid, Guid> repositoryFollow,
             IRepositoryBase<Evento, Guid> repoEvento,
             IRepositoryBase<Notificacion, Guid> repoNotificacion
         )
@@ -28,14 +29,16 @@ namespace Application.Services
 
         public Follow Agregar(Follow entidad)
         {
-            int EntidadTipoID = 4; //Nuevo Seguidor
+            int EventoTipoID = 4; //Nuevo Seguidor
+            int EntidadTipoID = 1; //Usuario
 
             entidad.Id = Guid.NewGuid();
 
             var evento = new Evento()
             {
                 Id = Guid.NewGuid(),
-                EventoTipoID = EntidadTipoID,
+                EventoTipoID = EventoTipoID,
+                EntidadTipoID = EntidadTipoID,
                 UsuarioID = entidad.SeguidorID,
                 ReferenciaID = entidad.Id,
                 FechaHora = DateTime.Now
@@ -48,7 +51,7 @@ namespace Application.Services
                 FechaHora = DateTime.Now
             };
 
-            entidad.EventoTipoID = EntidadTipoID;
+            entidad.EventoTipoID = EventoTipoID;
             entidad.EventoID = evento.Id;
 
             var guardado = _repository.Agregar(entidad);
@@ -66,9 +69,16 @@ namespace Application.Services
             throw new Exception("No se puede editar un follow");
         }
 
+        public void Eliminar(Guid Id)
+        {
+            var follow = _repository.ObtenerPorId(Id) ?? throw new Exception("Follow no encontrado");
+            _repository.Eliminar(follow);
+            _repository.Guardar();
+        }
+
         public void Eliminar(Follow entidad)
         {
-            _repository.Eliminar(entidad);
+            throw new NotImplementedException();
         }
 
         public List<Follow> Listar()
@@ -83,14 +93,19 @@ namespace Application.Services
             return resultado;
         }
 
-        public List<FollowsDTO> ObtenerSeguidores(Guid id)
+        public bool EliminarPorSeguidorYSeguido(Guid seguidor, Guid seguido)
+        {
+           return _repositoryFollow.EliminarPorSeguidorYSeguido(seguidor, seguido);
+        }
+
+        public List<UserDTO> ObtenerSeguidores(Guid id)
         {
             var resultado = _repositoryFollow.ObtenerSeguidores(id);
 
             return resultado;
         }
 
-        public List<FollowsDTO> ObtenerSeguidos(Guid id)
+        public List<UserDTO> ObtenerSeguidos(Guid id)
         {
             var resultado = _repositoryFollow.ObtenerSeguidos(id);
 

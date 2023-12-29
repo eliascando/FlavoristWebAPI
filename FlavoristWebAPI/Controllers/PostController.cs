@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Application.Services;
-using Infraestructure.Data.Context;
-using Infraestructure.Data.Repository;
-using Newtonsoft.Json;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -23,22 +18,22 @@ namespace FlavoristWebAPI.Controllers
 
         //Obtener por usuario
         [HttpGet("usuario/{idUser}")]
-        public ActionResult GetPorUser(Guid id)
+        public ActionResult GetPorUser(Guid idUser)
         {
-            return Ok(_postService.ListarPorUsuario(id));
+            return Ok(_postService.ListarPorUsuario(idUser));
         }
 
         [HttpGet("categoria/{idCategoria}")]
-        public ActionResult GetPorCategoria(Guid id)
+        public ActionResult GetPorCategoria(Guid idCategoria)
         {
-            return Ok(_postService.ListarPorCategoria(id));
+            return Ok(_postService.ListarPorCategoria(idCategoria));
         }
 
         //Obtener por id
-        [HttpGet("{id}")]
-        public ActionResult GetPorID(Guid id)
+        [HttpGet("{idReceta}")]
+        public ActionResult GetPorID(Guid idReceta)
         {
-            var respuesta = _postService.ObtenerPorId(id);
+            var respuesta = _postService.ObtenerPorId(idReceta);
             return Ok(respuesta);
         }
 
@@ -57,11 +52,8 @@ namespace FlavoristWebAPI.Controllers
             }
         }
 
-        //// PUT api/<PostController>/5
+        //// TODO: Implementar PUT para editar receta
         //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
 
         //Eliminar receta
         [HttpDelete("{id}")]

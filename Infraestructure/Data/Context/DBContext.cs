@@ -16,9 +16,12 @@ namespace Infraestructure.Data.Context
             var created = Database.EnsureCreated();
             if (created)
             {
-                Debug.WriteLine("No existía la base de datos. Se creó la base de datos.");
+                Debug.WriteLine("Database created");
             }
-
+            else
+            {
+                Debug.WriteLine("Database already exists");
+            }
         }
 
         //Catalog
@@ -29,6 +32,7 @@ namespace Infraestructure.Data.Context
         public DbSet<RecetaDificultad> RecetaDificultades { get; set; }
         public DbSet<UnidadMedida> UnidadMedidas { get; set; }
         public DbSet<UsuarioTipo> UsuarioTipos { get; set; }
+        public DbSet<EntidadTipo> EntidadTipos { get; set; }
 
         //Entities
         public DbSet<Comentario> Comentarios { get; set; }
