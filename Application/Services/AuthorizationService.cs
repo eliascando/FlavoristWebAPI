@@ -35,8 +35,6 @@ namespace Application.Services
             
             var key = Encoding.ASCII.GetBytes(secret);
 
-            var usuarioTipo = _repoUsuarioTipo.ObtenerPorId(user.UsuarioTipoID);
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]

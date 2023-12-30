@@ -4,10 +4,10 @@ using Domain.Interfaces.Repository;
 using Domain.DTOs;
 using Domain.Entities;
 using Domain.Entities.Catalog;
-using Infraestructure.Data.Context;
-using Infraestructure.Data.Repository;
-using Microsoft.EntityFrameworkCore;
 using Infraestructure.Comunication.Mail;
+using Infraestructure.Persistence.Context;
+using Infraestructure.Persistence.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlavoristWebAPI.Config
 {

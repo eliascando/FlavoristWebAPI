@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
+using Domain.DTOs;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -16,10 +17,19 @@ namespace FlavoristWebAPI.Controllers
             _usuarioService = usuarioService;
         }
 
-        [HttpGet("{id}")]
+        // Obtener información detallada de un usuario, solo para administradores
+        [HttpGet("/admin/usuario/{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public ActionResult<Usuario> Get(Guid id)
         {
             return Ok(_usuarioService.ObtenerPorId(id));
+        }
+
+        // Obtener información de un usuario, para todos los usuarios
+        [HttpGet("{id}")]
+        public ActionResult<UserDTO> GetUsuario(Guid id)
+        {
+            return Ok(_usuarioService.ObtenerUsuarioDTO(id));
         }
 
         [HttpPost("registrar")]
@@ -54,6 +64,7 @@ namespace FlavoristWebAPI.Controllers
         }
 
         [HttpDelete("eliminar/{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public ActionResult Delete(Guid id)
         {
             var usuario = _usuarioService.ObtenerPorId(id);

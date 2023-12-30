@@ -1,6 +1,5 @@
 ﻿using Application.Services;
 using Domain.DTOs;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlavoristWebAPI.Controllers

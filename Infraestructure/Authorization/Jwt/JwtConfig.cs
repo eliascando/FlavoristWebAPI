@@ -32,20 +32,39 @@ namespace Infraestructure.Authorization.Jwt
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
                                 context.Response.Headers.Add("Token-Expired", "true");
+                                context.Response.StatusCode = 401;
+                                context.Response.ContentType = "application/json";
+                                var result = JsonConvert.SerializeObject(new { error = "Token Expired", message = "The token has expired." });
+                                return context.Response.WriteAsync(result);
                             }
-                            return Task.CompletedTask;
+                            else
+                            {
+                                context.Response.StatusCode = 401;
+                                context.Response.ContentType = "application/json";
+                                var result = JsonConvert.SerializeObject(new { error = "Invalid Token", message = "The token is invalid." });
+                                return context.Response.WriteAsync(result);
+                            }
                         },
                         OnChallenge = context =>
                         {
+                            // Si no hay token en la solicitud
+                            if (!context.Request.Headers.ContainsKey("Authorization"))
+                            {
+                                context.HandleResponse();
+                                context.Response.StatusCode = 401;
+                                context.Response.ContentType = "application/json";
+                                var result = JsonConvert.SerializeObject(new { error = "No Token", message = "No token was provided." });
+                                return context.Response.WriteAsync(result);
+                            }
+
                             context.HandleResponse();
                             context.Response.StatusCode = 401;
                             context.Response.ContentType = "application/json";
-                            var result = JsonConvert.SerializeObject(new { error = "Unauthorized", message = "Missing, invalid or expired token" });
-                            return context.Response.WriteAsync(result);
-                        },
+                            var defaultResult = JsonConvert.SerializeObject(new { error = "Unauthorized", message = "Missing, invalid or expired token" });
+                            return context.Response.WriteAsync(defaultResult);
+                        }
                     };
                 });
-
             return services;
         }
     }

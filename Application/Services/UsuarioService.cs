@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Domain.DTOs;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 
@@ -25,6 +26,22 @@ namespace Application.Services
             var usuario = _reposUsuario.Agregar(entidad);
             _reposUsuario.Guardar();
             return usuario;
+        }
+
+        public UserDTO ObtenerUsuarioDTO(Guid id)
+        {
+            var usuario = _reposUsuario.ObtenerPorId(id);
+
+            var usuarioDTO = new UserDTO()
+            {
+                Id = usuario.Id,
+                Nombres = usuario.Nombres,
+                Apellidos = usuario.Apellidos,
+                Correo = usuario.Correo,
+                Foto = usuario.Foto,
+            };
+
+            return usuarioDTO;
         }
 
         public Usuario Editar(Usuario entidad)

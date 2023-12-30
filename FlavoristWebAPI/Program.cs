@@ -3,11 +3,15 @@ using Infraestructure.Authorization.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Jwt Authentication and Authorization
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("role", "Admin"));
+});
+
 // Inject Dependencies
 builder.Services.InjectDependencies(builder.Configuration);
-
-// Add Jwt Authentication
-builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Build the container
 var app = builder.Build();
