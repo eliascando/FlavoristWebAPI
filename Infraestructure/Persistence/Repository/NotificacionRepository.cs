@@ -5,7 +5,7 @@ using Domain.Interfaces.Repository;
 namespace Infraestructure.Persistence.Repository
 {
     public class NotificacionRepository
-        : IRepositoryBase<Notificacion, Guid>
+        : IRepositoryBase<Notificacion, int, Guid>
     {
         private DBContext db;
 
@@ -46,6 +46,11 @@ namespace Infraestructure.Persistence.Repository
         public void Guardar()
         {
             db.SaveChanges();
+        }
+
+        public Notificacion ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

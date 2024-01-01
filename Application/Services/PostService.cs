@@ -1,5 +1,7 @@
 ﻿using Application.Interfaces;
+using Domain.DTOs;
 using Domain.Entities;
+using Domain.Entities.Catalog;
 using Domain.Interfaces.Repository;
 using System.Diagnostics;
 
@@ -9,21 +11,27 @@ namespace Application.Services
         : IServicePost<Receta, Guid>
     {
         private readonly IRepositoryPost<Receta, Guid> _repository;
-        private readonly IRepositoryBase<Evento,Guid> _evento;
-        private readonly IRepositoryBase<Notificacion,Guid> _notificacion;
-        private readonly IRepositoryBase<Publicacion,Guid> _publicacion;
+        private readonly IRepositoryBase<Evento, int, Guid> _evento;
+        private readonly IRepositoryBase<Notificacion, int, Guid> _notificacion;
+        private readonly IRepositoryBase<Publicacion, int, Guid> _publicacion;
+        private readonly IRepositoryBase<RecetaCategoria, int, Guid> _categoria;
+        private readonly IRepositoryBase<RecetaDificultad, int, Guid> _dificultad;
 
         public PostService(
             IRepositoryPost<Receta, Guid> repository,
-            IRepositoryBase<Evento,Guid> repoEvento,
-            IRepositoryBase<Notificacion, Guid> repoNotificacion,
-            IRepositoryBase<Publicacion, Guid> repoPublicacion
+            IRepositoryBase<Evento, int, Guid> repoEvento,
+            IRepositoryBase<Notificacion, int, Guid> repoNotificacion,
+            IRepositoryBase<Publicacion, int, Guid> repoPublicacion,
+            IRepositoryBase<RecetaCategoria, int, Guid> repoCategoria,
+            IRepositoryBase<RecetaDificultad, int, Guid> repoDificultad
         )
         {
             _repository = repository;
             _evento = repoEvento;
             _notificacion = repoNotificacion;
             _publicacion = repoPublicacion;
+            _categoria = repoCategoria;
+            _dificultad = repoDificultad;
         }
 
         public Receta Agregar(Receta entidad)
@@ -136,6 +144,34 @@ namespace Application.Services
         public void Guardar()
         {
             _repository.Guardar();
+        }
+
+        public List<Receta> ListorPorSeguidos(Guid idUsuario)
+        {
+            throw new NotImplementedException();
+        }
+        public List<RecetaDTO> ListarRecetasFeed(Guid idUsuario)
+        {
+            var recetas = _repository.ListorPorSeguidos(idUsuario);
+            var recetasDTO = new List<RecetaDTO>();
+
+            recetas.ForEach(receta =>
+            {
+                recetasDTO.Add(new RecetaDTO()
+                {
+                    Id = receta.Id,
+                    Nombre = receta.Nombre,
+                    Descripcion = receta.Descripcion,
+                    Imagen = receta.Imagen,
+                    FechaCreacion = receta.FechaCreacion,
+                    Categoria = _categoria.ObtenerPorId(receta.CategoriaID).Nombre,
+                    Dificultad = _dificultad.ObtenerPorId(receta.DificultadID).Nombre,
+                    Porciones = receta.Porciones,
+                    Costo = receta.Costo,
+                });
+            });
+
+            return recetasDTO;
         }
     }
 }

@@ -10,13 +10,13 @@ namespace Application.Services
         : IServiceLike<Like, LikeDTO, UserDTO, Guid, Guid>
     {
         private readonly IRepositoryLike<Like, LikeDTO, UserDTO ,Guid, Guid> _repository;
-        private readonly IRepositoryBase<Notificacion, Guid> _notificacion;
-        private readonly IRepositoryBase<Evento, Guid> _evento;
+        private readonly IRepositoryBase<Notificacion, int, Guid> _notificacion;
+        private readonly IRepositoryBase<Evento, int, Guid> _evento;
 
         public LikeService(
             IRepositoryLike<Like, LikeDTO, UserDTO, Guid, Guid> repository,
-            IRepositoryBase<Notificacion, Guid> notificacion,
-            IRepositoryBase<Evento, Guid> evento
+            IRepositoryBase<Notificacion, int, Guid> notificacion,
+            IRepositoryBase<Evento, int, Guid> evento
         )
         {
             _repository = repository;

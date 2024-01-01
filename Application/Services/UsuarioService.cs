@@ -5,11 +5,11 @@ using Domain.Interfaces.Repository;
 
 namespace Application.Services
 {
-    public class UsuarioService : IServiceBase<Usuario, Guid>
+    public class UsuarioService : IServiceBase<Usuario, int, Guid>
     {
-        private readonly IRepositoryBase<Usuario, Guid> _reposUsuario;
+        private readonly IRepositoryBase<Usuario, int, Guid> _reposUsuario;
 
-        public UsuarioService(IRepositoryBase<Usuario, Guid> reposUsuario)
+        public UsuarioService(IRepositoryBase<Usuario, int, Guid> reposUsuario)
         {
             _reposUsuario = reposUsuario;
         }
@@ -77,6 +77,11 @@ namespace Application.Services
         {
             var resultado = _reposUsuario.ObtenerPorId(id);
             return resultado;
+        }
+
+        public Usuario ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

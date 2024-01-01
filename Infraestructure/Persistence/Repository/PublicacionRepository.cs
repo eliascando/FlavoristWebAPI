@@ -5,7 +5,7 @@ using Infraestructure.Persistence.Context;
 namespace Infraestructure.Persistence.Repository
 {
     public class PublicacionRepository
-        : IRepositoryBase<Publicacion, Guid>
+        : IRepositoryBase<Publicacion, int, Guid>
     {
         private DBContext db;
 
@@ -46,6 +46,11 @@ namespace Infraestructure.Persistence.Repository
         public void Guardar()
         {
             db.SaveChanges();
+        }
+
+        public Publicacion ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

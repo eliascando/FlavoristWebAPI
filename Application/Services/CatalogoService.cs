@@ -5,11 +5,11 @@ using Domain.Interfaces.Repository;
 namespace Application.Services
 {
     public class CatalogoServicePais
-        : IServiceBase<Pais, Guid>
+        : IServiceBase<Pais, int, Guid>
     {
-        private readonly IRepositoryBase<Pais, Guid> _reposPais;
+        private readonly IRepositoryBase<Pais, int, Guid> _reposPais;
 
-        public CatalogoServicePais(IRepositoryBase<Pais, Guid> reposPais)
+        public CatalogoServicePais(IRepositoryBase<Pais, int, Guid> reposPais)
         {
             _reposPais = reposPais;
         }
@@ -44,14 +44,19 @@ namespace Application.Services
         {
             throw new NotImplementedException();
         }
+
+        public Pais ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoServiceUsuarioTipo
-        :IServiceBase<UsuarioTipo, int>
+        : IServiceBase<UsuarioTipo, int, Guid>
     {
-           private readonly IRepositoryBase<UsuarioTipo, int> _reposUsuarioTipo;
+           private readonly IRepositoryBase<UsuarioTipo, int, Guid> _reposUsuarioTipo;
 
-        public CatalogoServiceUsuarioTipo(IRepositoryBase<UsuarioTipo, int> reposUsuarioTipo)
+        public CatalogoServiceUsuarioTipo(IRepositoryBase<UsuarioTipo, int, Guid> reposUsuarioTipo)
         {
             _reposUsuarioTipo = reposUsuarioTipo;
         }
@@ -86,14 +91,19 @@ namespace Application.Services
             var resultado = _reposUsuarioTipo.ObtenerPorId(id) ?? throw new Exception("UsuarioTipo no encontrado");
             return resultado;
         }
+
+        public UsuarioTipo ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoServiceIngredienteCategoria
-        :IServiceBase<IngredienteCategoria, Guid>
+        : IServiceBase<IngredienteCategoria, int, Guid>
     {
-        private readonly IRepositoryBase<IngredienteCategoria, Guid> _reposIngredienteCategoria;
+        private readonly IRepositoryBase<IngredienteCategoria, int, Guid> _reposIngredienteCategoria;
 
-        public CatalogoServiceIngredienteCategoria(IRepositoryBase<IngredienteCategoria, Guid> reposIngredienteCategoria)
+        public CatalogoServiceIngredienteCategoria(IRepositoryBase<IngredienteCategoria, int, Guid> reposIngredienteCategoria)
         {
             _reposIngredienteCategoria = reposIngredienteCategoria;
         }
@@ -129,14 +139,19 @@ namespace Application.Services
             var resultado = _reposIngredienteCategoria.ObtenerPorId(id) ?? throw new Exception("IngredienteCategoria no encontrado");
             return resultado;
         }
+
+        public IngredienteCategoria ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoServiceRecetaCategoria
-        :IServiceBase<RecetaCategoria, Guid>
+        : IServiceBase<RecetaCategoria, int, Guid>
     {
-        private readonly IRepositoryBase<RecetaCategoria, Guid> _reposRecetaCategoria;
+        private readonly IRepositoryBase<RecetaCategoria, int, Guid> _reposRecetaCategoria;
 
-        public CatalogoServiceRecetaCategoria(IRepositoryBase<RecetaCategoria, Guid> reposRecetaCategoria)
+        public CatalogoServiceRecetaCategoria(IRepositoryBase<RecetaCategoria, int, Guid> reposRecetaCategoria)
         {
             _reposRecetaCategoria = reposRecetaCategoria;
         }
@@ -172,14 +187,19 @@ namespace Application.Services
             var resultado = _reposRecetaCategoria.ObtenerPorId(id) ?? throw new Exception("RecetaCategoria no encontrado");
             return resultado;
         }
+
+        public RecetaCategoria ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoServiceRecetaDificultad
-        :IServiceBase<RecetaDificultad, int>
+        : IServiceBase<RecetaDificultad, int, Guid>
     {
-        private readonly IRepositoryBase<RecetaDificultad, int> _reposRecetaDificultad;
+        private readonly IRepositoryBase<RecetaDificultad, int, Guid> _reposRecetaDificultad;
 
-        public CatalogoServiceRecetaDificultad(IRepositoryBase<RecetaDificultad, int> reposRecetaDificultad)
+        public CatalogoServiceRecetaDificultad(IRepositoryBase<RecetaDificultad, int, Guid> reposRecetaDificultad)
         {
             _reposRecetaDificultad = reposRecetaDificultad;
         }
@@ -214,14 +234,19 @@ namespace Application.Services
             var resultado = _reposRecetaDificultad.ObtenerPorId(id) ?? throw new Exception("RecetaDificultad no encontrado");
             return resultado;
         }
+
+        public RecetaDificultad ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoServiceUnidadMedida
-        :IServiceBase<UnidadMedida, int>
+        : IServiceBase<UnidadMedida, int, Guid>
     {
-        private readonly IRepositoryBase<UnidadMedida, int> _reposUnidadMedida;
+        private readonly IRepositoryBase<UnidadMedida, int, Guid> _reposUnidadMedida;
 
-        public CatalogoServiceUnidadMedida(IRepositoryBase<UnidadMedida, int> reposUnidadMedida)
+        public CatalogoServiceUnidadMedida(IRepositoryBase<UnidadMedida, int, Guid> reposUnidadMedida)
         {
             _reposUnidadMedida = reposUnidadMedida;
         }
@@ -256,14 +281,19 @@ namespace Application.Services
             var resultado = _reposUnidadMedida.ObtenerPorId(id) ?? throw new Exception("UnidadMedida no encontrado");
             return resultado;
         }
+
+        public UnidadMedida ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoServiceEventoTipo
-        :IServiceBase<EventoTipo, int>
+        : IServiceBase<EventoTipo, int, Guid>
     {
-        private readonly IRepositoryBase<EventoTipo, int> _reposEventoTipo;
+        private readonly IRepositoryBase<EventoTipo, int, Guid> _reposEventoTipo;
 
-        public CatalogoServiceEventoTipo(IRepositoryBase<EventoTipo, int> reposEventoTipo)
+        public CatalogoServiceEventoTipo(IRepositoryBase<EventoTipo, int, Guid> reposEventoTipo)
         {
             _reposEventoTipo = reposEventoTipo;
         }
@@ -297,6 +327,11 @@ namespace Application.Services
         {
             var resultado = _reposEventoTipo.ObtenerPorId(id) ?? throw new Exception("EventoTipo no encontrado");
             return resultado;
+        }
+
+        public EventoTipo ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

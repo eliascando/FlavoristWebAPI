@@ -5,7 +5,7 @@ using Infraestructure.Persistence.Context;
 namespace Infraestructure.Persistence.Repository
 {
     public class CatalogoRepositoryPais
-        :IRepositoryBase<Pais,Guid >
+        : IRepositoryBase<Pais, int, Guid>
     {
         private DBContext db;
 
@@ -45,10 +45,15 @@ namespace Infraestructure.Persistence.Repository
         {
             db.SaveChanges();
         }
+
+        public Pais ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoRepositoryUsuarioTipo
-        : IRepositoryBase<UsuarioTipo, int>
+        : IRepositoryBase<UsuarioTipo, int, Guid>
     {
         private DBContext db;
 
@@ -87,10 +92,15 @@ namespace Infraestructure.Persistence.Repository
         {
             db.SaveChanges();
         }
+
+        public UsuarioTipo ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }   
 
     public class CatalogoRepositoryIngredienteCategoria
-        : IRepositoryBase<IngredienteCategoria, Guid>
+        : IRepositoryBase<IngredienteCategoria, int, Guid>
     {
            private DBContext db;
 
@@ -130,10 +140,15 @@ namespace Infraestructure.Persistence.Repository
         {
             db.SaveChanges();
         }
+
+        public IngredienteCategoria ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoRepositoryRecetaCategoria
-        : IRepositoryBase<RecetaCategoria, Guid>
+        : IRepositoryBase<RecetaCategoria, int, Guid>
     {
            private DBContext db;
 
@@ -173,10 +188,15 @@ namespace Infraestructure.Persistence.Repository
         {
             db.SaveChanges();
         }
+
+        public RecetaCategoria ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoRepositoryRecetaDificultad
-        : IRepositoryBase<RecetaDificultad, int>
+        : IRepositoryBase<RecetaDificultad, int, Guid>
     {
            private DBContext db;
 
@@ -215,10 +235,15 @@ namespace Infraestructure.Persistence.Repository
         {
             db.SaveChanges();
         }
+
+        public RecetaDificultad ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoRepositoryUnidadMedida
-        : IRepositoryBase<UnidadMedida, int>
+        : IRepositoryBase<UnidadMedida, int, Guid>
     {
            private DBContext db;
 
@@ -256,10 +281,15 @@ namespace Infraestructure.Persistence.Repository
         {
             db.SaveChanges();
         }
+
+        public UnidadMedida ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CatalogoRepositoryEventoTipo
-        : IRepositoryBase<EventoTipo, int>
+        : IRepositoryBase<EventoTipo, int, Guid>
     {
            private DBContext db;
 
@@ -297,6 +327,11 @@ namespace Infraestructure.Persistence.Repository
         public void Guardar()
         {
             db.SaveChanges();
+        }
+
+        public EventoTipo ObtenerPorId(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

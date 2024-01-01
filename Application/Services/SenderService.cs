@@ -33,12 +33,15 @@ namespace Application.Services
                     mail.To.Add(to);
                     mail.Subject = sub;
                     mail.Body = msg;
+                    mail.IsBodyHtml = true; // Indica que el cuerpo del correo electrónico es HTML
 
                     // Configura el cliente de SMTP para el envío del correo electrónico
-                    SmtpClient client = new SmtpClient(_mailConfig.Value.Host, _mailConfig.Value.Port);
-                    client.Credentials = new NetworkCredential(_mailConfig.Value.Email, _mailConfig.Value.Password);
-                    client.EnableSsl = _mailConfig.Value.UseSSL;
-                    await client.SendMailAsync(mail); // Envía el correo electrónico
+                    using (SmtpClient client = new SmtpClient(_mailConfig.Value.Host, _mailConfig.Value.Port))
+                    {
+                        client.Credentials = new NetworkCredential(_mailConfig.Value.Email, _mailConfig.Value.Password);
+                        client.EnableSsl = _mailConfig.Value.UseSSL;
+                        await client.SendMailAsync(mail); // Envía el correo electrónico
+                    }
                     return true;
                 }
             }

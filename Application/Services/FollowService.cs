@@ -6,25 +6,25 @@ using Domain.Interfaces.Repository;
 namespace Application.Services
 {
     public class FollowService
-        : IServiceBase<Follow, Guid>, 
+        : IServiceBase<Follow, int, Guid>, 
         IServiceFollow<UserDTO, Guid, Guid, Guid>
     {
-        private readonly IRepositoryBase<Follow, Guid> _repository;
+        private readonly IRepositoryBase<Follow, int, Guid> _repository;
+        private readonly IRepositoryBase<Notificacion, int, Guid> _notificacion;
+        private readonly IRepositoryBase<Evento, int, Guid> _evento;
         private readonly IRepositoryFollow<UserDTO, Guid, Guid, Guid> _repositoryFollow;
-        private readonly IRepositoryBase<Evento, Guid> _evento;
-        private readonly IRepositoryBase<Notificacion, Guid> _notificacion;
 
         public FollowService(
-            IRepositoryBase<Follow, Guid> repository,
-            IRepositoryFollow<UserDTO, Guid, Guid, Guid> repositoryFollow,
-            IRepositoryBase<Evento, Guid> repoEvento,
-            IRepositoryBase<Notificacion, Guid> repoNotificacion
+            IRepositoryBase<Follow, int, Guid> repository,
+            IRepositoryBase<Notificacion, int, Guid> repoNotificacion,
+            IRepositoryBase<Evento, int, Guid> repoEvento,
+            IRepositoryFollow<UserDTO, Guid, Guid, Guid> repositoryFollow
         )
         {
             _repository = repository;
-            _repositoryFollow = repositoryFollow;
-            _evento = repoEvento;
             _notificacion = repoNotificacion;
+            _evento = repoEvento;
+            _repositoryFollow = repositoryFollow;
         }
 
         public Follow Agregar(Follow entidad)
@@ -110,6 +110,11 @@ namespace Application.Services
             var resultado = _repositoryFollow.ObtenerSeguidos(id);
 
             return resultado;
+        }
+
+        public Follow ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

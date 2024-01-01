@@ -12,10 +12,11 @@ namespace Application.Services
         private const int Interval = 60; // Intervalo en segundos para cada OTP
         private static readonly string UsedOtpFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data.dat");
 
-        public string GenerarOTP(Guid id)
+        public string GenerarOTP(Guid id, int timeStepDelta = 0)
         {
             string secretKey = GenerateBase64Key(id.ToString());
-            long timestep = GetCurrentTimeStepNumber();
+            long timestep = GetCurrentTimeStepNumber() + timeStepDelta;
+
             byte[] timestepBytes = BitConverter.GetBytes(timestep);
             if (BitConverter.IsLittleEndian)
             {
@@ -42,15 +43,25 @@ namespace Application.Services
 
         public bool ValidarOTP(Guid id, string otp)
         {
-            string expectedOtp = GenerarOTP(id);
             var usedOtps = ReadUsedOtps();
-
             string key = $"{id}-{otp}";
-            if (otp == expectedOtp && !usedOtps.ContainsKey(key))
+
+            // Verificar si el OTP ya fue utilizado
+            if (usedOtps.ContainsKey(key))
             {
-                usedOtps[key] = DateTime.UtcNow;
-                WriteUsedOtps(usedOtps);
-                return true;
+                return false;
+            }
+
+            // Generar y validar OTP para varios intervalos de tiempo
+            for (int i = -1; i <= 1; i++)
+            {
+                string expectedOtp = GenerarOTP(id, i);
+                if (otp == expectedOtp)
+                {
+                    usedOtps[key] = DateTime.UtcNow;
+                    WriteUsedOtps(usedOtps);
+                    return true;
+                }
             }
 
             return false;

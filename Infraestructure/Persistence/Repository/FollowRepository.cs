@@ -6,7 +6,7 @@ using Infraestructure.Persistence.Context;
 namespace Infraestructure.Persistence.Repository
 {
     public class FollowRepository
-        : IRepositoryBase<Follow, Guid>
+        : IRepositoryBase<Follow, int, Guid>
     {
         private DBContext db;
 
@@ -62,6 +62,11 @@ namespace Infraestructure.Persistence.Repository
         {
             var follow = db.Follows.Where(x => x.SeguidorID == id).FirstOrDefault() ?? throw new Exception("Follow no encontrado");
             return follow;
+        }
+
+        public Follow ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 

@@ -32,6 +32,7 @@ namespace FlavoristWebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")] // Se agrega la politica "OnlyAdmin
         public ActionResult Post([FromBody] Pais pais)
         {
             if (pais == null)

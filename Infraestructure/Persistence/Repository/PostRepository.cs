@@ -133,5 +133,26 @@ namespace Infraestructure.Persistence.Repository
         {
             db.SaveChanges();
         }
+
+        public List<Receta> ListorPorSeguidos(Guid idUsuario)
+        {
+            var follows = db.Follows.Where(x => x.SeguidorID == idUsuario).ToList();
+            var recetas = new List<Receta>();
+
+            follows.ForEach(follow =>
+            {
+                var recetasUsuario = db.Recetas.Where(x => x.UsuarioID == follow.SeguidoID).ToList();
+
+                recetasUsuario.ForEach(receta =>
+                {
+                    receta.RecetaPasos = db.RecetaPasos.Where(y => y.RecetaID == receta.Id).ToList();
+                    receta.RecetaIngredientes = db.RecetaIngredientes.Where(y => y.RecetaID == receta.Id).ToList();
+                });
+
+                recetas.AddRange(recetasUsuario);
+            });
+            
+            return recetas;
+        }
     }
 }

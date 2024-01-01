@@ -15,11 +15,11 @@ namespace Application.Services
         : IServiceAuthorization<Usuario, AuthResultDTO>
     {
         private readonly IConfiguration _configuration;
-        private readonly IRepositoryBase<UsuarioTipo, int> _repoUsuarioTipo;
+        private readonly IRepositoryBase<UsuarioTipo, int, Guid> _repoUsuarioTipo;
 
         public AuthorizationService(
             IConfiguration configuration,
-            IRepositoryBase<UsuarioTipo, int> repoUsuarioTipo
+            IRepositoryBase<UsuarioTipo, int, Guid> repoUsuarioTipo
         )
         {
             _configuration = configuration;

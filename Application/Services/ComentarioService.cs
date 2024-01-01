@@ -9,13 +9,13 @@ namespace Application.Services
         : IServiceComentario<Comentario,CommentDTO, Guid>
     {
         private readonly IRepositoryComentario<Comentario, Guid> _repository;
-        private readonly IRepositoryBase<Notificacion, Guid> _notificacion;
-        private readonly IRepositoryBase<Evento, Guid> _evento;
+        private readonly IRepositoryBase<Notificacion, int, Guid> _notificacion;
+        private readonly IRepositoryBase<Evento, int, Guid> _evento;
 
         public ComentarioService(
             IRepositoryComentario<Comentario, Guid> repository,
-            IRepositoryBase<Notificacion, Guid> notificacion, 
-            IRepositoryBase<Evento, Guid> evento
+            IRepositoryBase<Notificacion, int, Guid> notificacion, 
+            IRepositoryBase<Evento, int, Guid> evento
         )
         {
             _repository = repository;

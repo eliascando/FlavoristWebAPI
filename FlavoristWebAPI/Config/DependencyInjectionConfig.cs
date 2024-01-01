@@ -52,20 +52,20 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<IServiceLogin<AuthDTO, Usuario>, LoginService>();
             services.AddScoped<IServiceLike<Like, LikeDTO, UserDTO, Guid, Guid>, LikeService>();
             services.AddScoped<IServiceComentario<Comentario, CommentDTO, Guid>, ComentarioService>();
-            services.AddScoped<IServiceBase<Follow, Guid>, FollowService>();
+            services.AddScoped<IServiceBase<Follow, int, Guid>, FollowService>();
             services.AddScoped<IServiceFollow<UserDTO, Guid, Guid, Guid>, FollowService>();
             services.AddScoped<IServicePost<Receta, Guid>, PostService>();
-            services.AddScoped<IServiceBase<Usuario, Guid>, UsuarioService>();
+            services.AddScoped<IServiceBase<Usuario, int, Guid>, UsuarioService>();
             services.AddScoped<IServicePreferencia<UsuarioRecetaCategoriaFav, Guid>, PreferenciaCategoriaService>();
             services.AddScoped<IServicePreferencia<UsuarioRecetaFav, Guid>, PreferenciaRecetaService>();
             services.AddScoped<IServiceObtenerNotificacion<NotificacionDTO, Guid>, ObtenerNotificacionService>();
-            services.AddScoped<IServiceBase<Pais, Guid>, CatalogoServicePais>();
-            services.AddScoped<IServiceBase<UsuarioTipo, int>, CatalogoServiceUsuarioTipo>();
-            services.AddScoped<IServiceBase<IngredienteCategoria, Guid>, CatalogoServiceIngredienteCategoria>();
-            services.AddScoped<IServiceBase<RecetaCategoria, Guid>, CatalogoServiceRecetaCategoria>();
-            services.AddScoped<IServiceBase<RecetaDificultad, int>, CatalogoServiceRecetaDificultad>();
-            services.AddScoped<IServiceBase<UnidadMedida, int>, CatalogoServiceUnidadMedida>();
-            services.AddScoped<IServiceBase<EventoTipo, int>, CatalogoServiceEventoTipo>();
+            services.AddScoped<IServiceBase<Pais, int, Guid>, CatalogoServicePais>();
+            services.AddScoped<IServiceBase<UsuarioTipo, int, Guid>, CatalogoServiceUsuarioTipo>();
+            services.AddScoped<IServiceBase<IngredienteCategoria, int, Guid>, CatalogoServiceIngredienteCategoria>();
+            services.AddScoped<IServiceBase<RecetaCategoria, int, Guid>, CatalogoServiceRecetaCategoria>();
+            services.AddScoped<IServiceBase<RecetaDificultad, int, Guid>, CatalogoServiceRecetaDificultad>();
+            services.AddScoped<IServiceBase<UnidadMedida, int, Guid>, CatalogoServiceUnidadMedida>();
+            services.AddScoped<IServiceBase<EventoTipo, int, Guid>, CatalogoServiceEventoTipo>();
             services.AddScoped<IServiceSender<string, string, string>, SenderService>();
             services.AddScoped<IServiceOTP<Guid>, OTPService>();
             services.AddScoped<IServicePassword<Guid, string>, PasswordService>();
@@ -94,26 +94,26 @@ namespace FlavoristWebAPI.Config
             services.AddScoped<PasswordRepository>();
 
             // Implement Repositories
-            services.AddScoped<IRepositoryBase<Usuario, Guid>, UsuarioRepository>();
-            services.AddScoped<IRepositoryBase<Publicacion, Guid>, PublicacionRepository>();
+            services.AddScoped<IRepositoryBase<Usuario, int, Guid>, UsuarioRepository>();
+            services.AddScoped<IRepositoryBase<Publicacion, int, Guid>, PublicacionRepository>();
             services.AddScoped<IRepositoryLike<Like,LikeDTO, UserDTO, Guid, Guid>, LikeRepository>();
             services.AddScoped<IRepositoryPost<Receta, Guid>, PostRepository>();
-            services.AddScoped<IRepositoryBase<Notificacion, Guid>, NotificacionRepository>();
+            services.AddScoped<IRepositoryBase<Notificacion, int, Guid>, NotificacionRepository>();
             services.AddScoped<IRepositoryAuthorization<AuthDTO, Usuario>, LoginRepository>();
             services.AddScoped<IRepositoryFollow<UserDTO, Guid, Guid, Guid>, FollowsRepository>();
-            services.AddScoped<IRepositoryBase<Follow, Guid>, FollowRepository>();
-            services.AddScoped<IRepositoryBase<Evento, Guid>, EventoRepository>();
+            services.AddScoped<IRepositoryBase<Follow, int, Guid>, FollowRepository>();
+            services.AddScoped<IRepositoryBase<Evento, int, Guid>, EventoRepository>();
             services.AddScoped<IRepositoryPreferencia<UsuarioRecetaCategoriaFav, Guid>, PreferenciaCategoriaRepository>();
             services.AddScoped<IRepositoryPreferencia<UsuarioRecetaFav, Guid>, PreferenciasRecetaRepository>();
             services.AddScoped<IRepositoryObtenerNotificacion<NotificacionDTO, Guid>, ObtenerNotificacionRepository>();
             services.AddScoped<IRepositoryComentario<Comentario, Guid>, ComentarioRepository>();
-            services.AddScoped<IRepositoryBase<EventoTipo, int>, CatalogoRepositoryEventoTipo>();
-            services.AddScoped<IRepositoryBase<UnidadMedida, int>, CatalogoRepositoryUnidadMedida>();
-            services.AddScoped<IRepositoryBase<RecetaDificultad, int>, CatalogoRepositoryRecetaDificultad>();
-            services.AddScoped<IRepositoryBase<RecetaCategoria, Guid>, CatalogoRepositoryRecetaCategoria>();
-            services.AddScoped<IRepositoryBase<IngredienteCategoria, Guid>, CatalogoRepositoryIngredienteCategoria>();
-            services.AddScoped<IRepositoryBase<UsuarioTipo, int>, CatalogoRepositoryUsuarioTipo>();
-            services.AddScoped<IRepositoryBase<Pais, Guid>, CatalogoRepositoryPais>();
+            services.AddScoped<IRepositoryBase<EventoTipo, int, Guid>, CatalogoRepositoryEventoTipo>();
+            services.AddScoped<IRepositoryBase<UnidadMedida, int, Guid>, CatalogoRepositoryUnidadMedida>();
+            services.AddScoped<IRepositoryBase<RecetaDificultad, int, Guid>, CatalogoRepositoryRecetaDificultad>();
+            services.AddScoped<IRepositoryBase<RecetaCategoria, int, Guid>, CatalogoRepositoryRecetaCategoria>();
+            services.AddScoped<IRepositoryBase<IngredienteCategoria, int, Guid>, CatalogoRepositoryIngredienteCategoria>();
+            services.AddScoped<IRepositoryBase<UsuarioTipo, int, Guid>, CatalogoRepositoryUsuarioTipo>();
+            services.AddScoped<IRepositoryBase<Pais, int, Guid>, CatalogoRepositoryPais>();
             services.AddScoped<IRepositoryPassword<Guid, string>, PasswordRepository>();
             #endregion
 

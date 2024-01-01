@@ -57,6 +57,14 @@ namespace Infraestructure.Persistence.Repository
                 .Where(x => !string.IsNullOrEmpty(x.Mensaje))
                 .OrderByDescending(x => x.FechaHora)
                 .ToListAsync();
+            
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == idUsuario);
+
+            if (usuario != null)
+            {
+                usuario.FechaNotificaciones = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
 
             return notificaciones.Select(x => new NotificacionDTO
             {

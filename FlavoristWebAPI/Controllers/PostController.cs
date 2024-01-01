@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Application.Services;
+using Domain.DTOs;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -20,13 +21,41 @@ namespace FlavoristWebAPI.Controllers
         [HttpGet("usuario/{idUser}")]
         public ActionResult<List<Receta>> GetPorUser(Guid idUser)
         {
-            return Ok(_postService.ListarPorUsuario(idUser));
+            try
+            {
+                return Ok(_postService.ListarPorUsuario(idUser));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+            }
         }
 
         [HttpGet("categoria/{idCategoria}")]
         public ActionResult<List<Receta>> GetPorCategoria(Guid idCategoria)
         {
-            return Ok(_postService.ListarPorCategoria(idCategoria));
+            try
+            {
+                return Ok(_postService.ListarPorCategoria(idCategoria));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+            }
+        }
+
+        //Obtener por seguidos, es decir el feed de un usuario
+        [HttpGet("feed/{idUsuario}")]
+        public ActionResult<List<RecetaDTO>> GetFeed(Guid idUsuario)
+        {
+            try
+            {
+                return Ok(_postService.ListarRecetasFeed(idUsuario));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+            }
         }
 
         //Obtener por id

@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Security.Claims;
 using System.Text;
 
 namespace Infraestructure.Authorization.Jwt
@@ -15,6 +17,7 @@ namespace Infraestructure.Authorization.Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    Debug.WriteLine($"Secret: {configuration["Jwt:Secret"]}");
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -62,7 +65,20 @@ namespace Infraestructure.Authorization.Jwt
                             context.Response.ContentType = "application/json";
                             var defaultResult = JsonConvert.SerializeObject(new { error = "Unauthorized", message = "Missing, invalid or expired token" });
                             return context.Response.WriteAsync(defaultResult);
-                        }
+                        },
+                        OnTokenValidated = context =>
+                        {
+                            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                            if (claimsIdentity != null)
+                            {
+                                foreach (var claim in claimsIdentity.Claims)
+                                {
+                                    Debug.WriteLine($"Claim Type: {claim.Type} - Claim Value: {claim.Value}");
+                                }
+                            }
+
+                            return Task.CompletedTask;
+                        },
                     };
                 });
             return services;

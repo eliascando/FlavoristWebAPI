@@ -5,7 +5,7 @@ using Infraestructure.Persistence.Context;
 namespace Infraestructure.Persistence.Repository
 {
     public class EventoRepository
-        : IRepositoryBase<Evento, Guid>
+        : IRepositoryBase<Evento, int, Guid>
     {
         private DBContext db;
 
@@ -52,6 +52,11 @@ namespace Infraestructure.Persistence.Repository
         public void Guardar()
         {
             db.SaveChanges();
+        }
+
+        public Evento ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

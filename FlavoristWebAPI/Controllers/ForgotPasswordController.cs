@@ -35,7 +35,7 @@ namespace FlavoristWebAPI.Controllers
             try
             {
                 var otp = _otpService.GenerarOTP(id);
-                var mensaje = $"Su código de recuperación de contraseña es: \n{otp}, \neste código expira en 1 minuto.";
+                var mensaje = $"<h1>Flavorist</h1><p>Estimado usuario, para reestablecer su contraseña debe ingresar el siguiente OTP:</p><strong>{otp}</strong><p>Este código expira en 1 minuto.</p>";
                 var correo = _passwordService.ObtenerCorreo(id);
 
                 var result = await _senderService.Send(correo, mensaje, "Recuperación de contraseña");

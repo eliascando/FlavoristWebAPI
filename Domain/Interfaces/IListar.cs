@@ -1,8 +1,9 @@
 ﻿namespace Domain.Interfaces
 {
-    public interface IListar<T, TId>
+    public interface IListar<T, IntId, GuidId>
     {
         List<T> Listar();
-        T ObtenerPorId(TId id);
+        T ObtenerPorId(IntId id);
+        T ObtenerPorId(GuidId id);
     }
 }
