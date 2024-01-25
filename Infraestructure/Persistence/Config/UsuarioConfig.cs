@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Catalog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,6 +24,14 @@ namespace Infraestructure.Persistence.Config
 
             builder.HasKey(u => u.Id);
             builder.HasIndex(u => u.Correo).IsUnique();
+
+            builder.HasOne(u => u.UsuarioTipo)
+                   .WithMany()
+                   .HasForeignKey(u => u.UsuarioTipoID);
+
+            builder.HasOne(u => u.Pais)
+                   .WithMany()
+                   .HasForeignKey(u => u.PaisID);
         }
     }
 }

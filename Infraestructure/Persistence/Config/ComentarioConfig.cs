@@ -18,6 +18,14 @@ namespace Infraestructure.Persistence.Config
             builder.Property(e => e.EventoID).IsRequired();
 
             builder.HasKey(e => e.Id);
+
+            builder.HasOne(e => e.EventoTipo)
+              .WithMany()
+              .HasForeignKey(e => e.EventoTipoID);
+
+            builder.HasOne(e => e.Evento)
+                  .WithMany()
+                  .HasForeignKey(e => e.EventoID);
         }
     }
 }
