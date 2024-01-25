@@ -1,5 +1,8 @@
 using FlavoristWebAPI.Config;
 using Infraestructure.Authorization.Jwt;
+using Infraestructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +19,16 @@ builder.Services.InjectDependencies(builder.Configuration);
 
 // Build the container
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DBContext>();
+
+    // Apply migrations
+    Debug.WriteLine("Migrating database...");
+    context.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

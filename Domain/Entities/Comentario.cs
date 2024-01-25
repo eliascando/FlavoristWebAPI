@@ -9,8 +9,8 @@ namespace Domain.Entities
         public Guid ReferenciaID { get; set; }
         public string Texto { get; set; }
         public int EventoTipoID { get; set; }
-        public EventoTipo EventoTipo { get; set; }
+        public EventoTipo ? EventoTipo { get; set; }
         public Guid EventoID { get; set; }
-        public Evento Evento { get; set; }
+        public Evento ? Evento { get; set; }
     }
 }

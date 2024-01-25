@@ -12,8 +12,7 @@ namespace Infraestructure.Persistence.Context
         public DBContext(DbContextOptions<DBContext> options)
         : base(options)
         {
-            //Asegura que la base de datos se cree si no existe
-            Database.EnsureCreated();
+
         }
 
         //Catalog
@@ -55,6 +54,7 @@ namespace Infraestructure.Persistence.Context
             modelBuilder.ApplyConfiguration(new RecetaPasoConfig());
             modelBuilder.ApplyConfiguration(new UnidadMedidaConfig());
             modelBuilder.ApplyConfiguration(new UsuarioConfig());
+            modelBuilder.ApplyConfiguration(new PaisConfig());
         }
     }
 }

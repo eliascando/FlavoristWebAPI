@@ -13,7 +13,7 @@
         public int DificultadID { get; set; }
         public int Porciones { get; set; }
         public decimal Costo { get; set; }
-        public List<RecetaPaso> RecetaPasos { get; set; }
-        public List<RecetaIngrediente> RecetaIngredientes { get; set; }
+        public List<RecetaPaso> ? RecetaPasos { get; set; }
+        public List<RecetaIngrediente> ? RecetaIngredientes { get; set; }
     }
 }
