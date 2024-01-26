@@ -474,8 +474,4 @@ $RECYCLE.BIN/
 *.msp
 
 # Windows shortcuts
-*.lnk
-
-# Appsettings
-FlavoristWebAPI/appsettings.json
 
