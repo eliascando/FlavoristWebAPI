@@ -3,6 +3,7 @@ using Domain.Entities.Catalog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace FlavoristWebAPI.Controllers
 {
     // Estos son los catalogos

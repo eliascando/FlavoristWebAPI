@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using FlavoristWebAPI.Utils;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,11 +13,13 @@ namespace FlavoristWebAPI.Controllers
     {
         private readonly PreferenciaCategoriaService _categoria;
         private readonly PreferenciaRecetaService _receta;
+        private readonly IWebHostEnvironment _env;
 
-        public PreferenciaController(PreferenciaCategoriaService categoria, PreferenciaRecetaService receta)
+        public PreferenciaController(PreferenciaCategoriaService categoria, PreferenciaRecetaService receta, IWebHostEnvironment env)
         {
             _categoria = categoria;
             _receta = receta;
+            _env = env;
         }
 
         // Guardar receta favorita
@@ -32,7 +35,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -49,40 +52,40 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
         // Eliminar receta favorita
-        [HttpDelete("/api/eliminar/recetaguardada")]
-        public ActionResult<Object> DeleteReceta(UsuarioRecetaFav entidad)
+        [HttpDelete("/api/eliminar/recetaguardada/{idReceta}/{idUsuario}")]
+        public ActionResult<Object> DeleteReceta(Guid idReceta, Guid idUsuario)
         {
             try
             {
-                _receta.Eliminar(entidad);
+                _receta.EliminarPorUsuarioYReceta(idUsuario, idReceta);
                 return Ok(new { succed = true, message = "Receta eliminada!" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
         // Eliminar categoria favorita
-        [HttpDelete("/api/eliminar/categoriaguardada")]
-        public ActionResult<Object> DeleteCategoria(UsuarioRecetaCategoriaFav entidad)
+        [HttpDelete("/api/eliminar/categoriaguardada/{idCategoria}/{idUsuario}")]
+        public ActionResult<Object> DeleteCategoria(Guid idCategoria, Guid idUsuario)
         {
             try
             {
-                _categoria.Eliminar(entidad);
+                _categoria.EliminarPorUsuarioYRecetaCategoria(idUsuario, idCategoria);
                 return Ok(new { succed = true, message = "Categoria eliminada!" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
-
+        
         // Obtener recetas favoritas de un usuario
         [HttpGet("/api/recetasguardadas/{idUsuario}")]
         public ActionResult<List<UsuarioRecetaFav>> GetRecetas(Guid idUsuario)
@@ -94,7 +97,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -109,7 +112,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
     }

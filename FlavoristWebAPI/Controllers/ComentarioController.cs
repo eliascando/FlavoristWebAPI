@@ -2,6 +2,7 @@
 using Domain.DTOs;
 using Application.Services;
 using Domain.Entities;
+using FlavoristWebAPI.Utils;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -10,10 +11,12 @@ namespace FlavoristWebAPI.Controllers
     public class ComentarioController : ControllerBase
     {
         private readonly ComentarioService _comentarioService;
+        private readonly IWebHostEnvironment _env;
 
-        public ComentarioController(ComentarioService comentarioService)
+        public ComentarioController(ComentarioService comentarioService, IWebHostEnvironment env)
         {
             _comentarioService = comentarioService;
+            _env = env;
         }
 
         // Comentar receta
@@ -28,7 +31,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -44,7 +47,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -59,7 +62,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex));
             }
         }
 
@@ -74,7 +77,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -89,7 +92,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -104,7 +107,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
     }

@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Application.Services;
 using Domain.DTOs;
+using FlavoristWebAPI.Utils;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -11,10 +12,16 @@ namespace FlavoristWebAPI.Controllers
     public class PostController : ControllerBase
     {
         private readonly PostService _postService;
+        private readonly LikeService _likeService;
+        private readonly PreferenciaRecetaService _preferenciaRecetaService;
+        private readonly IWebHostEnvironment _env;
 
-        public PostController(PostService postService)
+        public PostController(PostService postService, IWebHostEnvironment env, LikeService likeService, PreferenciaRecetaService preferenciaRecetaService)
         {
             _postService = postService;
+            _env = env;
+            _likeService = likeService;
+            _preferenciaRecetaService = preferenciaRecetaService;
         }
 
         //Obtener por usuario
@@ -27,7 +34,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -40,7 +47,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -54,16 +61,54 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
+            }
+        }
+
+        [HttpGet("explorer/{idUsuario}")]
+        public ActionResult<List<RecetaDTO>> GetExplorer(Guid idUsuario)
+        {
+            try
+            {
+                return Ok(_postService.ListarRecetasExplorer(idUsuario));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
         //Obtener por id
-        [HttpGet("{idReceta}")]
-        public ActionResult<Receta> GetPorID(Guid idReceta)
+        [HttpGet("{idReceta}/{idUsuario}")]
+        public ActionResult<Object> GetPorID(Guid idReceta, Guid idUsuario)
         {
-            var respuesta = _postService.ObtenerPorId(idReceta);
-            return Ok(respuesta);
+            var receta = _postService.ObtenerPorId(idReceta);
+            if (receta == null)
+                return NotFound();
+
+            var tieneLike = _likeService.ExisteLikeDeUsuarioEnPost(idUsuario, idReceta);
+            var guardado = _preferenciaRecetaService.ExistePreferencia(idUsuario, idReceta);
+
+            var response = new
+            {
+                receta.Id,
+                receta.UsuarioID,
+                receta.Nombre,
+                receta.Descripcion,
+                receta.TiempoPreparacion,
+                receta.Imagen,
+                receta.FechaCreacion,
+                receta.CategoriaID,
+                receta.DificultadID,
+                receta.Porciones,
+                receta.Costo,
+                receta.RecetaPasos,
+                receta.RecetaIngredientes,
+                TieneLike = tieneLike,
+                Guardado = guardado
+            };
+
+            return Ok(response);
         }
 
         //Publicar receta
@@ -77,7 +122,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -94,7 +139,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -110,7 +155,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
     }

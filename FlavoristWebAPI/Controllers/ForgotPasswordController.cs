@@ -2,8 +2,7 @@
 using Domain.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using FlavoristWebAPI.Utils;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -14,16 +13,19 @@ namespace FlavoristWebAPI.Controllers
         private readonly SenderService _senderService;
         private readonly OTPService _otpService;
         private readonly PasswordService _passwordService;
+        private readonly IWebHostEnvironment _env;
 
         public ForgotPasswordController(
             SenderService senderService, 
             OTPService otpService,
-            PasswordService passwordService
+            PasswordService passwordService,
+            IWebHostEnvironment env
         )
         {
             _senderService = senderService;
             _otpService = otpService;
             _passwordService = passwordService;
+            _env = env;
         }
 
         [HttpGet("gettoken/{id}")]
@@ -46,7 +48,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -66,7 +68,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -86,7 +88,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
     }

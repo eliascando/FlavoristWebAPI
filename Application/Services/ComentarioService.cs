@@ -48,6 +48,7 @@ namespace Application.Services
                     FechaHora = DateTime.Now
                 };
 
+
                 newComment.EventoID = evento.Id;
 
                 var notificacion = new Notificacion()
@@ -58,12 +59,12 @@ namespace Application.Services
                 };
 
 
-                var guardado = _repository.Agregar(newComment);
                 _evento.Agregar(evento);
+                var guardado = _repository.Agregar(newComment);
                 _notificacion.Agregar(notificacion);
 
-                _repository.Guardar();
                 _evento.Guardar();
+                _repository.Guardar();
                 _notificacion.Guardar();
 
                 return guardado;

@@ -3,6 +3,7 @@ using Domain.Entities;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Domain.DTOs;
+using FlavoristWebAPI.Utils;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -11,6 +12,7 @@ namespace FlavoristWebAPI.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly UsuarioService _usuarioService;
+        private readonly IWebHostEnvironment _env;
 
         public UsuarioController(UsuarioService usuarioService)
         {
@@ -46,7 +48,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 

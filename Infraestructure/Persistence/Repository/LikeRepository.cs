@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Infraestructure.Persistence.Context;
 using Domain.DTOs;
+using System.Diagnostics;
 
 namespace Infraestructure.Persistence.Repository
 {
@@ -107,5 +108,30 @@ namespace Infraestructure.Persistence.Repository
         {
             throw new NotImplementedException();
         }
+
+        public bool ExisteLikeDeUsuarioEnPost(Guid usuarioID, Guid referenciaID)
+        {
+            try
+            {
+                Debug.Write($" usuarioID: {usuarioID}, referenciaID: {referenciaID}");
+
+                // Verificar si existe un like del usuario para la referencia específica
+                var existeLike = db.Likes
+                    .Join(db.Eventos,
+                          like => like.EventoID,
+                          evento => evento.Id,
+                          (like, evento) => new { Like = like, Evento = evento })
+                    .Any(le => le.Like.ReferenciaID == referenciaID && le.Evento.UsuarioID == usuarioID && le.Evento.EventoTipoID == 1);
+
+                Debug.Write($" existe like? {existeLike}");
+                return existeLike;
+            }
+            catch (Exception ex)
+            {
+                Debug.Write($"Excepción: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }

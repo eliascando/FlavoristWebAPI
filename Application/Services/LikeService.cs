@@ -43,6 +43,14 @@ namespace Application.Services
         {
             int EventoTipoID = 1; //Nuevo Like
 
+            //primero validar que no exista un like de ese usuario en ese post
+            bool valido = _repository.ExisteLikeDeUsuarioEnPost(entidad.UsuarioID, entidad.ReferenciaID);
+
+            if (valido)
+            {
+                throw new Exception("Ya existe un like de este usuario en este post");
+            }
+
             var like = new Like()
             {
                 Id = Guid.NewGuid(),
@@ -85,6 +93,11 @@ namespace Application.Services
         {
             return _repository.ObtenerLikesOwners(id);
 
+        }
+
+        public bool ExisteLikeDeUsuarioEnPost(Guid usuario, Guid referenciaId)
+        {
+            return _repository.ExisteLikeDeUsuarioEnPost(usuario, referenciaId);
         }
     }
 }

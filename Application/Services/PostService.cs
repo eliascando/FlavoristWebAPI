@@ -173,5 +173,32 @@ namespace Application.Services
 
             return recetasDTO;
         }
+
+        public List<RecetaDTO> ListarRecetasExplorer(Guid idUsuario)
+        {
+            var recetas = _repository.ListarExplorer(idUsuario);
+            var recetasDTO = new List<RecetaDTO>();
+            recetas.ForEach( receta =>
+            {   
+                recetasDTO.Add(new RecetaDTO()
+                {
+                    Id = receta.Id,
+                    Nombre = receta.Nombre,
+                    Descripcion = receta.Descripcion,
+                    Imagen = receta.Imagen,
+                    FechaCreacion = receta.FechaCreacion,
+                    Categoria = _categoria.ObtenerPorId(receta.CategoriaID).Nombre,
+                    Dificultad = _dificultad.ObtenerPorId(receta.DificultadID).Nombre,
+                    Porciones = receta.Porciones,
+                    Costo = receta.Costo,
+                });
+            });   
+            return recetasDTO;
+        }
+
+        public List<Receta> ListarExplorer(Guid idUsuario)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

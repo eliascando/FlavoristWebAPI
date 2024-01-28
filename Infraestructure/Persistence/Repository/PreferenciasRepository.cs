@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infraestructure.Persistence.Context;
+using System.Diagnostics;
 
 namespace Infraestructure.Persistence.Repository
 {
@@ -23,8 +24,17 @@ namespace Infraestructure.Persistence.Repository
 
         public void Eliminar(UsuarioRecetaCategoriaFav entidad)
         {
-            db.UsuarioRecetaCategoriaFavs.Remove(entidad);
+            Debug.WriteLine($"Eliminando preferencia de categoria {entidad.RecetaCategoriaID} del usuario {entidad.UsuarioID}");
+            var preferencia = db.UsuarioRecetaCategoriaFavs.Where(x => x.UsuarioID == entidad.UsuarioID && x.RecetaCategoriaID == entidad.RecetaCategoriaID).FirstOrDefault() ?? throw new Exception("No se encontró la preferencia");
+            db.UsuarioRecetaCategoriaFavs.Remove(preferencia);
             db.SaveChanges();
+        }
+
+        public bool ExistePreferencia(Guid uid, Guid id)
+        {
+            var encontrado = db.UsuarioRecetaCategoriaFavs.Where(x => x.UsuarioID == uid && x.RecetaCategoriaID == id).FirstOrDefault();
+
+            return encontrado != null;
         }
 
         public List<UsuarioRecetaCategoriaFav> ObtenerPreferenciasPorUsuario(Guid uid)
@@ -53,8 +63,16 @@ namespace Infraestructure.Persistence.Repository
 
         public void Eliminar(UsuarioRecetaFav entidad)
         {
-            db.UsuarioRecetaFavs.Remove(entidad);
+            var preferencia = db.UsuarioRecetaFavs.Where(x => x.UsuarioID == entidad.UsuarioID && x.RecetaID == entidad.RecetaID).FirstOrDefault() ?? throw new Exception("No se encontró la preferencia");
+            db.UsuarioRecetaFavs.Remove(preferencia);
             db.SaveChanges();
+        }
+
+        public bool ExistePreferencia(Guid uid, Guid id)
+        {
+            var encontrado = db.UsuarioRecetaFavs.Where(x => x.UsuarioID == uid && x.RecetaID == id).FirstOrDefault();
+            
+            return encontrado != null;
         }
 
         public List<UsuarioRecetaFav> ObtenerPreferenciasPorUsuario(Guid uid)

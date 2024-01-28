@@ -31,6 +31,7 @@ namespace Infraestructure.Persistence.Context
         public DbSet<Follow> Follows { get; set; }
         public DbSet<Like> Likes { get; set; } 
         public DbSet<Notificacion> Notificaciones { get; set; }
+        public DbSet<NotificacionesHistorico> NotificacionesHistorico { get; set; }
         public DbSet<Publicacion> Publicaciones { get; set; }
         public DbSet<Receta> Recetas { get; set; }
         public DbSet<RecetaIngrediente> RecetaIngredientes {  get; set; }
@@ -55,6 +56,7 @@ namespace Infraestructure.Persistence.Context
             modelBuilder.ApplyConfiguration(new UnidadMedidaConfig());
             modelBuilder.ApplyConfiguration(new UsuarioConfig());
             modelBuilder.ApplyConfiguration(new PaisConfig());
+            modelBuilder.ApplyConfiguration(new NotificacionesHistoricoConfig());
         }
     }
 }

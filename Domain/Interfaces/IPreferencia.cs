@@ -9,5 +9,6 @@ namespace Domain.Interfaces
     public interface IPreferencia<T, Uid>
     {
         List<T> ObtenerPreferenciasPorUsuario(Uid uid);
+        Boolean ExistePreferencia(Uid uid, Guid id);
     }
 }

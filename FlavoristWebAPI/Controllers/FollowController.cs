@@ -2,9 +2,7 @@
 using Domain.DTOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
+using FlavoristWebAPI.Utils;
 namespace FlavoristWebAPI.Controllers
 {
     [Route("api")]
@@ -12,10 +10,12 @@ namespace FlavoristWebAPI.Controllers
     public class FollowController : ControllerBase
     {
         private readonly FollowService _followService;
+        private readonly IWebHostEnvironment _env;
 
-        public FollowController(FollowService followService)
+        public FollowController(FollowService followService, IWebHostEnvironment env)
         {
             _followService = followService;
+            _env = env;
         }
 
         // Obtener seguidores de un usuario
@@ -43,7 +43,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -58,7 +58,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
     }

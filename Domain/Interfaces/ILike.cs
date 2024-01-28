@@ -7,5 +7,6 @@
         int ObtenerCantidadLikeDePost(TId referenciaId);
         List<U> ObtenerLikesOwners(TId referenciaId);
         bool EliminarLikePorUsuarioYPost(UId usuario, TId referenciaId);
+        bool ExisteLikeDeUsuarioEnPost(UId usuario, TId referenciaId);
     }
 }

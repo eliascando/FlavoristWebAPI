@@ -2,6 +2,7 @@
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using FlavoristWebAPI.Utils;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -12,15 +13,19 @@ namespace FlavoristWebAPI.Controllers
         private readonly AuthorizationService _authorizationService;
         private readonly LoginService _loginService;
         private readonly CatalogoServiceUsuarioTipo _catalogoServiceUsuarioTipo;
+        private readonly IWebHostEnvironment _env;
 
         public AuthorizationController(
             AuthorizationService authorizationService,
             LoginService loginService,
-            CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo)
+            CatalogoServiceUsuarioTipo catalogoServiceUsuarioTipo,
+            IWebHostEnvironment env
+        )
         {
             _authorizationService = authorizationService;
             _loginService = loginService;
             _catalogoServiceUsuarioTipo = catalogoServiceUsuarioTipo;
+            _env = env;
         }
 
         // Login
@@ -52,7 +57,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = true, message = ex.Message });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
     }

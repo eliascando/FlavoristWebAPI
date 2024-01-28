@@ -13,5 +13,6 @@ namespace Domain.Interfaces
         List<T> ListarPorCategoria(TId id);
         List<T> ListarPorIngrediente(TId id);
         List<T> ListorPorSeguidos(Guid idUsuario);
+        List<T> ListarExplorer(Guid idUsuario);
     }
 }

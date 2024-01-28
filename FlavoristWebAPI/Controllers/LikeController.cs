@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using FlavoristWebAPI.Utils;
 
 namespace FlavoristWebAPI.Controllers
 {
@@ -9,10 +10,12 @@ namespace FlavoristWebAPI.Controllers
     public class LikeController : ControllerBase
     {
         private readonly LikeService _likeService;
+        private readonly IWebHostEnvironment _env;
 
-        public LikeController(LikeService likeService)
+        public LikeController(LikeService likeService, IWebHostEnvironment env)
         {
             _likeService = likeService;
+            _env = env;
         }
 
         [HttpGet("contar/{id}")]
@@ -34,7 +37,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -50,7 +53,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -68,7 +71,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
 
@@ -83,7 +86,7 @@ namespace FlavoristWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { succed = false, message = ex.Message, details = ex });
+                return BadRequest(new ExceptionResponse(ex, _env.IsDevelopment()));
             }
         }
     }

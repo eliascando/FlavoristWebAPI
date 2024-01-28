@@ -1,4 +1,5 @@
 ﻿using Domain.DTOs;
+using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -66,11 +67,27 @@ namespace Infraestructure.Persistence.Repository
                 await _context.SaveChangesAsync();
             }
 
-            return notificaciones.Select(x => new NotificacionDTO
+            var notificacioinesObtenidas = notificaciones.Select(x => new NotificacionDTO
             {
                 Mensaje = x.Mensaje,
                 TiempoTranscurrido = ConvertirMinutosATexto((int)(DateTime.Now - x.FechaHora).TotalMinutes)
             }).ToList();
+
+            notificacioinesObtenidas.ForEach(x =>
+            {
+                _context.NotificacionesHistorico.Add(new NotificacionesHistorico
+                {
+                    UsuarioID = idUsuario,
+                    Mensaje = x.Mensaje,
+                    TiempoTranscurrido = x.TiempoTranscurrido,
+                    Leido = true,
+                    FechaHora = DateTime.Now
+                });
+            });
+
+            await _context.SaveChangesAsync();
+
+            return notificacioinesObtenidas;
         }
 
         private string ConvertirMinutosATexto(int minutos)
